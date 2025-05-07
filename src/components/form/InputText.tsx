@@ -16,7 +16,7 @@ const InputText = <T extends FieldValues>({
       </label>
       <input
         type={type}
-        className={`block border p-1 rounded-sm w-full ${
+        className={`block border p-2 rounded-sm w-full ${
           errors?.[name] ? `border-red-500` : ``
         }`}
         {...register(name, { required })}

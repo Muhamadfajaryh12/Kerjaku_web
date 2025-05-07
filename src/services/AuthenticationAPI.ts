@@ -13,9 +13,18 @@ const AuthenticationAPI = (() => {
         username,
         password,
       });
-      return response;
+      console.log(response);
+      return {
+        status: response.status,
+        message: response.data.message,
+      };
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        return {
+          status: error.status || 500,
+          message: error.response?.data.message || "Internal Server Error",
+        };
+      }
     }
   };
 
@@ -25,9 +34,18 @@ const AuthenticationAPI = (() => {
         username,
         password,
       });
-      return response;
-    } catch (error) {
-      console.log(error);
+
+      return {
+        status: response.status,
+        token: response.data.token,
+      };
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        return {
+          status: error.status || 500,
+          message: error.response?.data.message || "Internal Server Error",
+        };
+      }
     }
   };
 

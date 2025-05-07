@@ -5,7 +5,7 @@ const ButtonPrimary = ({ name, click, type }: ButtonProps) => {
   return (
     <button
       type={type}
-      className="p-2 w-full rounded-sm bg-blue-400"
+      className="p-2 my-4 w-full rounded-sm bg-black text-white font-semibold "
       onClick={click}
     >
       {name}
