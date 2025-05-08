@@ -1,12 +1,12 @@
 import Cookies from "js-cookie";
-import CompanyInputProps from "@/types/Company";
+import { FormDataProps } from "@/types/Company";
 import axios from "axios";
 
 const CompanyAPI = (() => {
   const BASE_URL = process.env.NEXT_PUBLIC_API;
   const token = Cookies.get("token");
 
-  const InsertProfileCompany = async ({ formData }: CompanyInputProps) => {
+  const InsertProfileCompany = async ({ formData }: FormDataProps) => {
     try {
       const response = await axios.post(`${BASE_URL}/company`, formData, {
         headers: {
@@ -28,7 +28,13 @@ const CompanyAPI = (() => {
     }
   };
 
-  const UpdateProfileCompany = async ({ id, formData }: CompanyInputProps) => {
+  const UpdateProfileCompany = async ({
+    id,
+    formData,
+  }: {
+    id: number;
+    formData: FormDataProps;
+  }) => {
     try {
       const response = await axios.put(`${BASE_URL}/company/${id}`, formData, {
         headers: {
