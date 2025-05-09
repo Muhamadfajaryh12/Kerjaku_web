@@ -2,6 +2,7 @@
 import InputFile from "@/components/form/InputFile";
 import InputText from "@/components/form/InputText";
 import Select from "@/components/form/Select";
+import ProtectedLayout from "@/layouts/ProtectedLayout";
 import ProfileAPI from "@/services/ProfileAPI";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -67,82 +68,88 @@ const ProfileFormPage = () => {
   };
 
   return (
-    <div>
-      <form
-        action=""
-        onSubmit={handleSubmit(submitForm)}
-        className="max-w-2xl mx-auto"
-      >
-        <div>
-          <img src={photoURL ? photoURL : ""} alt="" />
-          <InputFile name="Foto" handleChangeImage={handlePhoto} />
-        </div>
-        <InputText
-          register={register}
-          type="text"
-          required={true}
-          errors={errors}
-          name="name"
-        />
-        <InputText
-          register={register}
-          type="text"
-          required={true}
-          errors={errors}
-          name="Ringkasan diri"
-        />
-        <InputText
-          register={register}
-          type="text"
-          required={true}
-          errors={errors}
-          name="Pendidikan"
-        />
-        <InputText
-          register={register}
-          type="text"
-          required={true}
-          errors={errors}
-          name="Alamat"
-        />
-
-        <div>
-          <label htmlFor="">CV</label>
-          <div className="p-2 border rounded-sm w-full">{nameCV}</div>
-          <InputFile name={"CV"} handleChangeImage={handleCV} />
-        </div>
-
-        <div>
-          <select onChange={(e) => handleChangeSkills(e.target.value)}>
-            <option value="">Pilih keahlian</option>
-
-            {skillsData.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.id}
-              </option>
-            ))}
-          </select>
-
-          <div className="flex items-center gap-4">
-            {skills &&
-              skills?.map((item, index) => (
-                <div
-                  className="p-2 bg-gray-200 shadow-sm w-auto flex rounded-sm items-center gap-4"
-                  key={index}
-                >
-                  <p>{item}</p>
-                  <button
-                    onClick={() => handleRemoveSkills(item)}
-                    type="button"
-                  >
-                    x
-                  </button>
-                </div>
-              ))}
+    <ProtectedLayout>
+      <div>
+        <form
+          action=""
+          onSubmit={handleSubmit(submitForm)}
+          className=" mx-auto flex gap-4 justify-center items-start  max-w-2xl"
+        >
+          <div className="flex-none mt-4">
+            <img
+              src={photoURL ? photoURL : ""}
+              alt=""
+              className="w-56 h-56 border"
+            />
+            <InputFile name="Foto" handleChangeImage={handlePhoto} />
           </div>
-        </div>
-      </form>
-    </div>
+          <div className="shrink w-full">
+            <InputText
+              register={register}
+              type="text"
+              required={true}
+              errors={errors}
+              name="nama"
+            />
+            <InputText
+              register={register}
+              type="text"
+              required={true}
+              errors={errors}
+              name="Ringkasan diri"
+            />
+            <InputText
+              register={register}
+              type="text"
+              required={true}
+              errors={errors}
+              name="Pendidikan"
+            />
+            <InputText
+              register={register}
+              type="text"
+              required={true}
+              errors={errors}
+              name="Alamat"
+            />
+
+            <div>
+              <label htmlFor="">CV</label>
+              <div className="p-2 border rounded-sm w-full">
+                {nameCV ? nameCV : "-"}
+              </div>
+              <InputFile name={"CV"} handleChangeImage={handleCV} />
+            </div>
+
+            <div>
+              <Select
+                data={skillsData}
+                name={"Keahlian"}
+                onChange={(e) => handleChangeSkills(e.target.value)}
+              />
+
+              <div className="flex items-center gap-4 my-2 flex-wrap">
+                {skills &&
+                  skills?.map((item, index) => (
+                    <div
+                      className="p-2 bg-gray-200 shadow-sm w-auto flex rounded-sm items-center gap-4"
+                      key={index}
+                    >
+                      <p>{item}</p>
+                      <button
+                        onClick={() => handleRemoveSkills(item)}
+                        type="button"
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </ProtectedLayout>
   );
 };
 

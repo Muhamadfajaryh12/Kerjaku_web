@@ -1,6 +1,10 @@
 import React from "react";
 
-const Select = ({ data, name, register, required, errors }) => {
+const Select = ({ data, name, register, required, errors, onChange }) => {
+  const selectProps = register
+    ? { ...register(name, { required }) }
+    : { onChange };
+
   return (
     <div className="my-2 w-full">
       <label htmlFor="" className="font-semibold opacity-80 capitalize text-xs">
@@ -10,7 +14,7 @@ const Select = ({ data, name, register, required, errors }) => {
         className={`block border p-2 rounded-sm w-full ${
           errors?.[name] ? `border-red-500` : ``
         }`}
-        {...register(name, { required })}
+        {...selectProps}
       >
         <option value="">Pilih Tipe Perusahan</option>
         {data.map((item) => (
