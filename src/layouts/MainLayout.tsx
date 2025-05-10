@@ -1,7 +1,8 @@
 import Navbar from "@/components/navigation/Navbar";
+import LayoutProps from "@/types/layout/Layout";
 import React from "react";
 
-const ProtectedLayout = ({ children }) => {
+const MainLayout = ({ children }: LayoutProps) => {
   return (
     <div>
       <Navbar />
@@ -10,4 +11,4 @@ const ProtectedLayout = ({ children }) => {
   );
 };
 
-export default ProtectedLayout;
+export default MainLayout;

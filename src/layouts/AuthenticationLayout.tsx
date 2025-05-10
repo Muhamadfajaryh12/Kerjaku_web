@@ -1,5 +1,5 @@
 import React from "react";
-import LayoutProps from "../app/types/layout/Layout";
+import LayoutProps from "../types/layout/Layout";
 
 const AuthenticationLayout = ({ children }: LayoutProps) => {
   return (

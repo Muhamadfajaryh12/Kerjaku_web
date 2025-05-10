@@ -2,7 +2,7 @@
 import InputFile from "@/components/form/InputFile";
 import InputText from "@/components/form/InputText";
 import Select from "@/components/form/Select";
-import ProtectedLayout from "@/layouts/ProtectedLayout";
+import MainLayout from "@/layouts/MainLayout";
 import ProfileAPI from "@/services/ProfileAPI";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -68,7 +68,7 @@ const ProfileFormPage = () => {
   };
 
   return (
-    <ProtectedLayout>
+    <MainLayout>
       <div>
         <form
           action=""
@@ -149,7 +149,7 @@ const ProfileFormPage = () => {
           </div>
         </form>
       </div>
-    </ProtectedLayout>
+    </MainLayout>
   );
 };
 
