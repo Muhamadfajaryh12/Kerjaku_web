@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import AuthenticationLayout from "../../layouts/AuthenticationLayout";
-import InputText from "../components/form/InputText";
-import ButtonPrimary from "../components/button/ButtonPrimary";
+import InputText from "../../components/form/InputText";
+import ButtonPrimary from "../../components/button/ButtonPrimary";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AuthenticationProps } from "../types/Authentication";
+import { AuthenticationProps } from "../../types/Authentication";
 import AuthenticationAPI from "../../services/AuthenticationAPI";
-import FailedNotification from "../components/notification/FailedNotification";
+import FailedNotification from "../../components/notification/FailedNotification";
 import toast from "react-hot-toast";
 
 const RegisterPage = () => {

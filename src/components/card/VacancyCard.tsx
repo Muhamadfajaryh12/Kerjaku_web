@@ -11,7 +11,7 @@ const VacancyCard = ({ data }: VacancyProps) => {
       className="flex items-center gap-4 border border-gray-200 p-2 rounded-sm max-w-xl w-full"
     >
       <div>
-        <img src={data.company.photo} alt="" className="w-24 h-24 border" />
+        <img src={data?.company?.photo} alt="" className="w-24 h-24 border" />
       </div>
       <div className="w-full">
         <div className="flex items-center justify-between">
@@ -28,20 +28,20 @@ const VacancyCard = ({ data }: VacancyProps) => {
           <BiDollar />
           <span>{data.salary}</span>
         </p>
-        <p className="flex items-center gap-2 text-sm justify-between">
+        <div className="flex items-center gap-2 text-sm justify-between">
           <div className="flex items-center gap-2">
             <BiBuilding />
             <span>{data.company.company_name}</span> - <span> Full Time </span>
           </div>
           <p>Dibuka {useDate(data.date_start)}</p>
-        </p>
-        <p className="flex items-center gap-2 text-sm justify-between">
+        </div>
+        <div className="flex items-center gap-2 text-sm justify-between">
           <div className="flex items-center gap-2">
             <FaLocationDot />
             <span>{data.company.location}</span>
           </div>
           <p>Ditutup {useDate(data.date_end)}</p>
-        </p>
+        </div>
       </div>
     </div>
   );
