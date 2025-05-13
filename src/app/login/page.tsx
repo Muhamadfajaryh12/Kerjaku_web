@@ -4,7 +4,6 @@ import AuthenticationLayout from "../../layouts/AuthenticationLayout";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthenticationProps } from "../../types/Authentication";
 import AuthenticationAPI from "../../services/AuthenticationAPI";
-import FailedNotification from "../../components/notification/FailedNotification";
 import { setCookies } from "../../utils/cookie";
 import {
   Alert,
@@ -15,12 +14,14 @@ import {
   Input,
   Link,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [message, setMessage] = useState("");
-
+  const router = useRouter();
   const {
     register,
     formState: { errors },
@@ -37,6 +38,7 @@ const LoginPage = () => {
     }
     if (response?.status == 200) {
       setCookies("token", response?.token);
+      router.push("/");
     }
     console.log(errors);
   };
@@ -82,9 +84,17 @@ const LoginPage = () => {
                 <Button type="submit" mx="auto" width="full">
                   Submit
                 </Button>
-                <Link href="/register" colorPalette="teal" textAlign="center">
-                  Register
-                </Link>
+                <Text mx="auto">
+                  Belum memiliki akun?
+                  <Link
+                    href="/register"
+                    colorPalette="teal"
+                    mx="1"
+                    fontWeight="bold"
+                  >
+                    Register
+                  </Link>
+                </Text>
               </Stack>
             </form>
           </Card.Body>

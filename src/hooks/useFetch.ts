@@ -8,6 +8,7 @@ export const useFetch = (url: string) => {
   const fetch = async () => {
     try {
       const response = await axios.get(url);
+      console.log(response);
       setData(response.data);
     } catch (error) {
       setError(axios.isAxiosError(error) ? error.response?.message : "error");
@@ -18,7 +19,7 @@ export const useFetch = (url: string) => {
 
   useEffect(() => {
     fetch();
-  }, []);
+  }, [url]);
 
   return {
     loading,

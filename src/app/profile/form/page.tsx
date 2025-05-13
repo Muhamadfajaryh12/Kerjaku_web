@@ -1,20 +1,34 @@
 "use client";
-import InputFile from "@/components/form/InputFile";
-import InputText from "@/components/form/InputText";
-import Select from "@/components/form/Select";
 import MainLayout from "@/layouts/MainLayout";
 import ProfileAPI from "@/services/ProfileAPI";
+import {
+  Badge,
+  Box,
+  Breadcrumb,
+  Button,
+  CloseButton,
+  createListCollection,
+  Field,
+  FileUpload,
+  Flex,
+  Image,
+  Input,
+  InputGroup,
+  Portal,
+  Select,
+  Stack,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { LuFileImage, LuFileUp } from "react-icons/lu";
 
-const skillsData = [
-  {
-    id: "Programmer",
-  },
-  {
-    id: "Networking",
-  },
-];
+const skillsData = createListCollection({
+  items: [
+    { label: "Programmer", value: "Programmer" },
+    { label: "Network Engineer", value: "Network Engineer" },
+    { label: "Web Developer", value: "Web Developer" },
+  ],
+});
 
 const ProfileFormPage = () => {
   const [skills, setSkills] = useState([]);
@@ -70,83 +84,172 @@ const ProfileFormPage = () => {
   return (
     <MainLayout>
       <div>
-        <form
-          action=""
-          onSubmit={handleSubmit(submitForm)}
-          className=" mx-auto flex gap-4 justify-center items-start  max-w-2xl"
-        >
-          <div className="flex-none mt-4">
-            <img
-              src={photoURL ? photoURL : ""}
-              alt=""
-              className="w-56 h-56 border"
-            />
-            <InputFile name="Foto" handleChangeImage={handlePhoto} />
-          </div>
-          <div className="shrink w-full">
-            <InputText
-              register={register}
-              type="text"
-              required={true}
-              errors={errors}
-              name="nama"
-            />
-            <InputText
-              register={register}
-              type="text"
-              required={true}
-              errors={errors}
-              name="Ringkasan diri"
-            />
-            <InputText
-              register={register}
-              type="text"
-              required={true}
-              errors={errors}
-              name="Pendidikan"
-            />
-            <InputText
-              register={register}
-              type="text"
-              required={true}
-              errors={errors}
-              name="Alamat"
-            />
+        <Breadcrumb.Root my="5">
+          <Breadcrumb.List>
+            <Breadcrumb.Item>Profile</Breadcrumb.Item>
+            <Breadcrumb.Separator />
+            <Breadcrumb.Item>Form</Breadcrumb.Item>
+          </Breadcrumb.List>
+        </Breadcrumb.Root>
+        <form action="" onSubmit={handleSubmit(submitForm)}>
+          <Flex gap="10" justifyContent="center">
+            <Stack>
+              {photoURL ? (
+                <Image
+                  rounded="sm"
+                  src={photoURL}
+                  width="200px"
+                  height="200px"
+                />
+              ) : (
+                <Box
+                  borderWidth="1px"
+                  rounded="sm"
+                  width="200px"
+                  height="200px"
+                />
+              )}
 
-            <div>
-              <label htmlFor="">CV</label>
-              <div className="p-2 border rounded-sm w-full">
-                {nameCV ? nameCV : "-"}
+              <FileUpload.Root
+                accept="image/*"
+                onChange={(e) => handlePhoto(e.target.files?.[0])}
+              >
+                <FileUpload.HiddenInput />
+                <FileUpload.Trigger asChild>
+                  <Button variant="outline" size="md" mx="auto">
+                    <LuFileImage /> Upload Image
+                  </Button>
+                </FileUpload.Trigger>
+                {/* <FileUploadList /> */}
+              </FileUpload.Root>
+            </Stack>
+
+            <Stack gap="4">
+              <Field.Root invalid={!!errors.nama}>
+                <Field.Label>Nama Lengkap</Field.Label>
+                <Input
+                  {...register("nama", {
+                    required: "Nama Lengkap tidak boleh kosong",
+                  })}
+                  size="lg"
+                />
+                <Field.ErrorText>{errors.nama?.message}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root invalid={!!errors.ringkasan}>
+                <Field.Label>Ringkasan Diri</Field.Label>
+                <Input
+                  {...register("ringkasan", {
+                    required: "Ringkasan Diri tidak boleh kosong",
+                  })}
+                  size="lg"
+                />
+                <Field.ErrorText>{errors.ringkasan?.message}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root invalid={!!errors.pendidikan}>
+                <Field.Label>Pendidikan</Field.Label>
+                <Input
+                  {...register("pendidikan", {
+                    required: "Pendidikan tidak boleh kosong",
+                  })}
+                  size="lg"
+                />
+                <Field.ErrorText>{errors.pendidikan?.message}</Field.ErrorText>
+              </Field.Root>
+              <Flex gap="4">
+                <Field.Root invalid={!!errors.alamat}>
+                  <Field.Label>Alamat</Field.Label>
+                  <Input
+                    {...register("alamat", {
+                      required: "Alamat tidak boleh kosong",
+                    })}
+                    size="lg"
+                  />
+                  <Field.ErrorText>{errors.alamat?.message}</Field.ErrorText>
+                </Field.Root>
+
+                <Field.Root invalid={!!errors.handphone}>
+                  <Field.Label>Nomor Telepon</Field.Label>
+                  <Input
+                    {...register("handphone", {
+                      required: "Nomor Telepon tidak boleh kosong",
+                    })}
+                    size="lg"
+                  />
+                  <Field.ErrorText>{errors.handphone?.message}</Field.ErrorText>
+                </Field.Root>
+              </Flex>
+              <FileUpload.Root gap="1" size="lg">
+                <FileUpload.HiddenInput />
+                <FileUpload.Label>Circulum Vitae</FileUpload.Label>
+                <InputGroup
+                  startElement={<LuFileUp />}
+                  endElement={
+                    <FileUpload.ClearTrigger asChild>
+                      <CloseButton
+                        me="-1"
+                        size="xs"
+                        variant="plain"
+                        focusVisibleRing="inside"
+                        focusRingWidth="2px"
+                        pointerEvents="auto"
+                      />
+                    </FileUpload.ClearTrigger>
+                  }
+                >
+                  <Input asChild>
+                    <FileUpload.Trigger>
+                      <FileUpload.FileText lineClamp={1} />
+                    </FileUpload.Trigger>
+                  </Input>
+                </InputGroup>
+              </FileUpload.Root>
+              <div>
+                <Select.Root
+                  collection={skillsData}
+                  size="lg"
+                  onChange={(e) => handleChangeSkills(e.target.value)}
+                >
+                  <Select.HiddenSelect />
+                  <Select.Label>Keahlian</Select.Label>
+                  <Select.Control>
+                    <Select.Trigger>
+                      <Select.ValueText placeholder="Pilih Keahlian" />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                      <Select.Indicator />
+                    </Select.IndicatorGroup>
+                  </Select.Control>
+                  <Portal>
+                    <Select.Positioner>
+                      <Select.Content>
+                        {skillsData.items.map((item) => (
+                          <Select.Item item={item} key={item.value}>
+                            {item.label}
+                            <Select.ItemIndicator />
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select.Positioner>
+                  </Portal>
+                </Select.Root>
+                <Flex mt="2" gap="2">
+                  {skills &&
+                    skills?.map((item, index) => (
+                      <Badge size="lg" key={index}>
+                        {item}
+                        <button
+                          onClick={() => handleRemoveSkills(item)}
+                          type="button"
+                        >
+                          x
+                        </button>
+                      </Badge>
+                    ))}
+                </Flex>
               </div>
-              <InputFile name={"CV"} handleChangeImage={handleCV} />
-            </div>
-
-            <div>
-              <Select
-                data={skillsData}
-                name={"Keahlian"}
-                onChange={(e) => handleChangeSkills(e.target.value)}
-              />
-
-              <div className="flex items-center gap-4 my-2 flex-wrap">
-                {skills &&
-                  skills?.map((item, index) => (
-                    <div
-                      className="p-2 bg-gray-200 shadow-sm w-auto flex rounded-sm items-center gap-4"
-                      key={index}
-                    >
-                      <p>{item}</p>
-                      <button
-                        onClick={() => handleRemoveSkills(item)}
-                        type="button"
-                      >
-                        x
-                      </button>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          </div>
+              <Button>SUBMIT</Button>
+            </Stack>
+          </Flex>
         </form>
       </div>
     </MainLayout>

@@ -1,49 +1,51 @@
 import { useDate } from "@/hooks/useDate";
 import { VacancyProps } from "@/types/Vacancy";
+import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
 import { BiBuilding, BiDollar } from "react-icons/bi";
 import { FaLocationDot } from "react-icons/fa6";
 
 const VacancyCard = ({ data }: VacancyProps) => {
   return (
-    <div
-      id="card-vacancy"
-      className="flex items-center gap-4 border border-gray-200 p-2 rounded-sm max-w-xl w-full"
-    >
-      <div>
-        <img src={data?.company?.photo} alt="" className="w-24 h-24 border" />
-      </div>
-      <div className="w-full">
-        <div className="flex items-center justify-between">
-          <h6 className="font-bold">{data.name_vacancy}</h6>
-          <span
-            className={`${
-              data.status == "CLOSE" ? `bg-red-600` : `bg-green-600`
-            } text-xs font-semibold text-white p-1 rounded-sm`}
-          >
-            {data.status}
-          </span>
-        </div>
-        <p className="flex items-center gap-2 text-sm">
-          <BiDollar />
-          <span>{data.salary}</span>
-        </p>
-        <div className="flex items-center gap-2 text-sm justify-between">
-          <div className="flex items-center gap-2">
-            <BiBuilding />
-            <span>{data.company.company_name}</span> - <span> Full Time </span>
+    <Link href={`/vacancy/${data?.id}`}>
+      <Box id="card-vacancy" borderWidth="1px" rounded="md" p="2">
+        <Flex alignItems="start" gap="2">
+          <Image
+            rounded="md"
+            src={`http://127.0.0.1:3000/${data?.company?.photo}`}
+            width="150px"
+            height="150px"
+          />
+
+          <div className="w-full">
+            <Flex gap="2" alignItems="center" justifyContent="space-between">
+              <Text fontSize="xl" fontWeight="bolder">
+                {data.name_vacancy}
+              </Text>
+              <Badge colorPalette="green">{data?.status}</Badge>
+            </Flex>
+            <Flex gap="2" alignItems="center">
+              <BiDollar />
+              <Text fontSize="xs">{data?.salary}</Text>
+            </Flex>
+            <Flex gap="2" alignItems="center">
+              <BiBuilding />
+              <Text fontSize="xs">{data?.company.company_name}</Text>-
+              <Text fontSize="xs">{data?.type}</Text>
+            </Flex>
+            <Flex gap="2" alignItems="center">
+              <FaLocationDot />
+              <Text fontSize="xs">{data?.location}</Text>
+            </Flex>
+            <Flex gap="4" alignItems="center">
+              <Text fontSize="xs">{useDate(data.date_start)}</Text>-
+              <Text fontSize="xs">{useDate(data.date_start)}</Text>
+            </Flex>
           </div>
-          <p>Dibuka {useDate(data.date_start)}</p>
-        </div>
-        <div className="flex items-center gap-2 text-sm justify-between">
-          <div className="flex items-center gap-2">
-            <FaLocationDot />
-            <span>{data.company.location}</span>
-          </div>
-          <p>Ditutup {useDate(data.date_end)}</p>
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Box>
+    </Link>
   );
 };
 
