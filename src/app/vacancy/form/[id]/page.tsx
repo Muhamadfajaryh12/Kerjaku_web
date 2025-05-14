@@ -13,7 +13,6 @@ const FormApplicationVacancyPage = () => {
           <Breadcrumb.List>
             <Breadcrumb.Item>Vacancy</Breadcrumb.Item>
             <Breadcrumb.Separator />
-
             <Breadcrumb.Item>Application</Breadcrumb.Item>
           </Breadcrumb.List>
         </Breadcrumb.Root>

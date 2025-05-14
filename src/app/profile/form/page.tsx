@@ -41,6 +41,7 @@ const ProfileFormPage = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const id = localStorage.getItem("id");
 
   const handleChangeSkills = (data: string) => {
     if (data) {
@@ -76,6 +77,7 @@ const ProfileFormPage = () => {
     formData.append("skills", skills);
     formData.append("cv", cv);
     formData.append("photo", photo);
+    formData.append("id_user", id);
 
     const response = await ProfileAPI.InsertProfile({ formData: formData });
     return response;
@@ -178,7 +180,11 @@ const ProfileFormPage = () => {
                   <Field.ErrorText>{errors.handphone?.message}</Field.ErrorText>
                 </Field.Root>
               </Flex>
-              <FileUpload.Root gap="1" size="lg">
+              <FileUpload.Root
+                gap="1"
+                size="lg"
+                onChange={(e) => handleCV(e.target?.files[0])}
+              >
                 <FileUpload.HiddenInput />
                 <FileUpload.Label>Circulum Vitae</FileUpload.Label>
                 <InputGroup
@@ -247,7 +253,7 @@ const ProfileFormPage = () => {
                     ))}
                 </Flex>
               </div>
-              <Button>SUBMIT</Button>
+              <Button type="submit">SUBMIT</Button>
             </Stack>
           </Flex>
         </form>

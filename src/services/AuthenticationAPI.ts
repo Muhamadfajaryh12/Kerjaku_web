@@ -35,9 +35,12 @@ const AuthenticationAPI = (() => {
         password,
       });
 
+      localStorage.setItem("id", response.data.id);
+
       return {
         status: response.status,
         token: response.data.token,
+        id: response.data.id,
       };
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

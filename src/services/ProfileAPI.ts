@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 const ProfileAPI = (() => {
   const BASE_URL = process.env.NEXT_PUBLIC_API;
   const token = Cookies.get("token");
-
   const InsertProfile = async ({ formData }: FormDataProps) => {
     try {
       const response = await axios.post(`${BASE_URL}/profile`, formData, {
@@ -14,11 +13,13 @@ const ProfileAPI = (() => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response);
       return {
         status: response.status,
         message: response.data.message,
       };
     } catch (error) {
+      console.log(error);
       if (axios.isAxiosError(error)) {
         return {
           status: error.status || 500,
