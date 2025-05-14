@@ -8,6 +8,7 @@ export interface VacancyProps {
     salary: number;
     date_end: string;
     status: string;
+    type: string;
     date_start: string;
     id_company: number;
     company: {
