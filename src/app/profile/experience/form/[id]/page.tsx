@@ -1,5 +1,6 @@
 "use client";
 import { toaster } from "@/components/ui/toaster";
+import { useFetch } from "@/hooks/useFetch";
 import MainLayout from "@/layouts/MainLayout";
 import ExperienceAPI from "@/services/ExperienceAPI";
 import {
@@ -11,19 +12,47 @@ import {
   Stack,
   Textarea,
 } from "@chakra-ui/react";
-import React from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-const ExperienceForm = () => {
+const ExperienceUpdateForm = () => {
+  const params = useParams();
+  const {
+    data: { data },
+  } = useFetch(`${process.env.NEXT_PUBLIC_API}/experience/${params.id}`);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      name_experience: "",
+      name_company: "",
+      position: "",
+      date_start: "",
+      date_end: "",
+      description: "",
+    },
+  });
 
-  const submitExperience = async (data) => {
-    const response = await ExperienceAPI.InsertExperience({
+  useEffect(() => {
+    if (data) {
+      reset({
+        name_experience: data.name_experience,
+        name_company: data.name_company,
+        position: data.position,
+        date_start: data.date_start?.split("T")[0],
+        date_end: data.date_end?.split("T")[0],
+        description: data.description,
+      });
+    }
+  }, [data, reset]);
+
+  const submitUpdateExperience = async (data) => {
+    const response = await ExperienceAPI.UpdateExperience({
       name_experience: data.name_experience,
       name_company: data.name_company,
       position: data.position,
@@ -31,10 +60,9 @@ const ExperienceForm = () => {
       date_end: new Date(data.date_end).toISOString(),
       description: data.description,
       id_user: parseInt(localStorage.getItem("id")),
+      id: parseInt(params.id),
     });
-    console.log(response);
-    if (response?.status == 201) {
-      reset();
+    if (response?.status == 200) {
       toaster.create({
         title: response.message,
         type: "success",
@@ -52,7 +80,7 @@ const ExperienceForm = () => {
           <Breadcrumb.Item>Form</Breadcrumb.Item>
         </Breadcrumb.List>
       </Breadcrumb.Root>
-      <form action="" onSubmit={handleSubmit(submitExperience)}>
+      <form action="" onSubmit={handleSubmit(submitUpdateExperience)}>
         <Stack gap="4">
           <Field.Root invalid={!!errors.name_experience}>
             <Field.Label>Nama Pekerjaan</Field.Label>
@@ -125,4 +153,4 @@ const ExperienceForm = () => {
   );
 };
 
-export default ExperienceForm;
+export default ExperienceUpdateForm;

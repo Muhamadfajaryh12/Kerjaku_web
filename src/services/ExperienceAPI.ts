@@ -34,6 +34,7 @@ const ExperienceAPI = (() => {
         message: response.data.message,
       };
     } catch (error) {
+      console.log(error);
       if (axios.isAxiosError(error)) {
         return {
           status: error.status || 500,

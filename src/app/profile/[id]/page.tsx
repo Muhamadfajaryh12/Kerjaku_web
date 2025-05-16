@@ -1,7 +1,9 @@
 "use client";
 import ExperienceCard from "@/components/card/ExperienceCard";
+import { toaster } from "@/components/ui/toaster";
 import { useFetch } from "@/hooks/useFetch";
 import MainLayout from "@/layouts/MainLayout";
+import ExperienceAPI from "@/services/ExperienceAPI";
 import {
   Box,
   Breadcrumb,
@@ -23,6 +25,16 @@ const ProfilePage = () => {
   const { data } = useFetch(
     `${process.env.NEXT_PUBLIC_API}/profile/${params.id}`
   );
+
+  const deleteExperience = async (id: number) => {
+    const response = await ExperienceAPI.DeleteExperience(id);
+    if (response.status == 200) {
+      toaster.create({
+        title: response.message,
+        type: "success",
+      });
+    }
+  };
 
   return (
     <MainLayout>
@@ -78,7 +90,11 @@ const ProfilePage = () => {
               Experience
             </Text>
             {data?.data?.experience.map((item, index) => (
-              <ExperienceCard data={item} key={index} />
+              <ExperienceCard
+                data={item}
+                onDelete={deleteExperience}
+                key={index}
+              />
             ))}
             <Button asChild variant="surface">
               <Link href="/profile/experience/form"> Add Experience</Link>
