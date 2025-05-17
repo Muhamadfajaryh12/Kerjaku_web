@@ -22,20 +22,28 @@ import { FaLocationDot, FaMessage, FaPencil, FaPhone } from "react-icons/fa6";
 const ProfilePage = () => {
   const params = useParams();
 
-  const { data } = useFetch(
+  const { data, setData } = useFetch(
     `${process.env.NEXT_PUBLIC_API}/profile/${params.id}`
   );
 
   const deleteExperience = async (id: number) => {
     const response = await ExperienceAPI.DeleteExperience(id);
-    if (response.status == 200) {
+    if (response?.status == 200) {
       toaster.create({
-        title: response.message,
+        title: response?.message,
         type: "success",
       });
+      setData((prevData) => ({
+        ...prevData,
+        data: {
+          ...prevData?.data,
+          experience: prevData?.data?.experience.filter(
+            (item) => item.id !== id
+          ),
+        },
+      }));
     }
   };
-
   return (
     <MainLayout>
       <Breadcrumb.Root my="5">

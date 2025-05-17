@@ -1,12 +1,21 @@
 "use client";
-import { InputGroup, Input, Text, Box, Flex } from "@chakra-ui/react";
+import {
+  InputGroup,
+  Input,
+  Text,
+  Flex,
+  Button,
+  Menu,
+  Portal,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { set } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
+  const auth = Cookies.get("token");
   const [keyword, setKeyword] = useState();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,24 +51,37 @@ const Navbar = () => {
           />
         </InputGroup>
       </div>
-      <div className="flex gap-2 items-cente">
-        <Link href="/login">
-          <button
-            className="border-2 p-2 border-blue-500 text-xs uppercase text-blue-500 font-semibold text-center hover:bg-blue-500 hover:text-white "
-            style={{ letterSpacing: "2px" }}
-          >
-            Login
-          </button>
-        </Link>
-        <Link href="/register">
-          <button
-            className="border-2 p-2 border-gray-500 text-xs uppercase text-gray-500 font-semibold text-center"
-            style={{ letterSpacing: "2px" }}
-          >
-            Register
-          </button>
-        </Link>
-      </div>
+      {auth ? (
+        <Menu.Root>
+          <Menu.Trigger asChild>
+            <Text>Action</Text>
+          </Menu.Trigger>
+          <Portal>
+            <Menu.Positioner>
+              <Menu.Content>
+                <Menu.Item value="new-txt-a">
+                  <Link href="">Profile</Link>
+                </Menu.Item>
+                <Menu.Item value="new-txt-b">
+                  <Link href="">Lamaran Pekerjaan</Link>
+                </Menu.Item>
+                <Menu.Item value="new-txt-c">
+                  <Link href="">Logout</Link>
+                </Menu.Item>
+              </Menu.Content>
+            </Menu.Positioner>
+          </Portal>
+        </Menu.Root>
+      ) : (
+        <Flex gap="2">
+          <Button asChild variant="outline" colorPalette="gray" size="sm">
+            <Link href="/login">Login</Link>
+          </Button>
+          <Button asChild variant="outline" colorPalette="blue" size="sm">
+            <Link href="/register">Register</Link>
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 };

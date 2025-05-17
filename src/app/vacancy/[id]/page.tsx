@@ -14,7 +14,6 @@ const DetailVacancyPage = () => {
   const { data } = useFetch(
     `${process.env.NEXT_PUBLIC_API}/vacancy/${params.id}`
   );
-  console.log(data);
   return (
     <MainLayout>
       <Flex gap="5">
