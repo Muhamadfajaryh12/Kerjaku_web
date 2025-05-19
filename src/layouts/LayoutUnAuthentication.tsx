@@ -6,11 +6,11 @@ import React, { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
 const LayoutUnAuthentication = ({ children }: LayoutProps) => {
-  const [keyword, setKeyword] = useState();
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key == "Enter") {
       handleSearch();
     }

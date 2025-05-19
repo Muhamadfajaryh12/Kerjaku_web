@@ -4,7 +4,6 @@ import AuthenticationLayout from "../../layouts/AuthenticationLayout";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthenticationProps } from "../../types/Authentication";
 import AuthenticationAPI from "../../services/AuthenticationAPI";
-import { setCookies } from "../../utils/cookie";
 import {
   Alert,
   Button,
@@ -35,10 +34,6 @@ const RegisterPage = () => {
     if (response?.status == 400) {
       setMessage(response?.message);
     }
-    if (response?.status == 200) {
-      setCookies("token", response?.token);
-    }
-    console.log(errors);
   };
 
   return (

@@ -1,9 +1,14 @@
 "use client";
 
+import { PaginationProps } from "@/types/component/common/pagination";
 import { ButtonGroup, IconButton, Pagination } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
-const PaginationCommon = ({ currentPage, totalPages, onPageChange }) => {
+const PaginationCommon = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) => {
   return (
     <Pagination.Root
       count={totalPages * 10}

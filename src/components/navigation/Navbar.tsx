@@ -1,13 +1,15 @@
 "use client";
 import { Text, Flex, Button, Menu, Portal } from "@chakra-ui/react";
-import Link from "next/link";
 import React from "react";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocalStorate } from "@/hooks/useLocalStorage";
+import Link from "next/link";
 
 const Navbar = () => {
+  const path = usePathname();
   const auth = Cookies.get("token");
-  const id = localStorage.getItem("id");
+  const id = useLocalStorate("id");
   const router = useRouter();
   const Logout = () => {
     Cookies.remove("token");
@@ -20,8 +22,10 @@ const Navbar = () => {
         <Text fontWeight="bold" fontSize="2xl" mx="2">
           KerjaKu
         </Text>
-        <Link href="/">Vacancy</Link>
-        <Link href="/">Company</Link>
+        <Link href="/" className="border-4 border-blue-700">
+          Vacancy
+        </Link>
+        <Link href="/company">Company</Link>
       </Flex>
       {auth ? (
         <Flex alignItems="center" gap="4" p="2">

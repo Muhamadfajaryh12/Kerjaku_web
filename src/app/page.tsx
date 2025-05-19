@@ -22,10 +22,9 @@ const DashboardPage = () => {
       `&location=${params.get("location") || ""}`
   );
 
-  const totalPages = Math.ceil((data?.data?.length || 0) / itemsPage);
+  const totalPages = Math.ceil((data?.length || 0) / itemsPage);
   const currentItems =
-    data?.data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) ||
-    [];
+    data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) || [];
   return (
     <LayoutUnAuthentication>
       <div className="flex gap-4">

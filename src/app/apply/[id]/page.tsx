@@ -13,10 +13,9 @@ const ProfileApplyPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPage = 5;
-  const totalPages = Math.ceil((data?.data?.length || 0) / itemsPage);
+  const totalPages = Math.ceil((data?.length || 0) / itemsPage);
   const currentItems =
-    data?.data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) ||
-    [];
+    data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) || [];
 
   return (
     <MainLayout>
@@ -32,7 +31,7 @@ const ProfileApplyPage = () => {
           List Applications
         </Text>
         <Text fontSize="sm" fontWeight="bold">
-          Total application : {data?.data?.length}
+          Total application : {data?.length}
         </Text>
         <Stack>
           {currentItems.map((item, index) => (

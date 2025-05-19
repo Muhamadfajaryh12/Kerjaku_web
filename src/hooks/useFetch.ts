@@ -17,7 +17,7 @@ export const useFetch = (url: string) => {
         },
       });
       console.log(response);
-      setData(response.data);
+      setData(response.data.data);
     } catch (error) {
       setError(axios.isAxiosError(error) ? error.response?.message : "error");
     } finally {

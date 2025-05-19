@@ -47,7 +47,7 @@ const Filter = () => {
       <Stack gap="2">
         <p>Category</p>
         <Stack gap="2">
-          {data?.data?.category.map((item, index) => (
+          {data?.category?.map((item, index) => (
             <Checkbox.Root
               key={index}
               onCheckedChange={() => handleCheckboxChange("category", item)}
@@ -60,7 +60,7 @@ const Filter = () => {
         </Stack>
         <p>Type</p>
         <Stack gap="2">
-          {data?.data?.type.map((item, index) => (
+          {data?.type?.map((item, index) => (
             <Checkbox.Root
               key={index}
               onCheckedChange={() => handleCheckboxChange("type", item)}
@@ -73,7 +73,7 @@ const Filter = () => {
         </Stack>
         <p>Location</p>
         <Stack gap="2">
-          {data?.data?.location.map((item, index) => (
+          {data?.location?.map((item, index) => (
             <Checkbox.Root
               key={index}
               onCheckedChange={() => handleCheckboxChange("location", item)}

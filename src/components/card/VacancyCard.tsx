@@ -1,6 +1,7 @@
+import { useCurrency } from "@/hooks/useCurrency";
 import { useDate } from "@/hooks/useDate";
 import { VacancyProps } from "@/types/Vacancy";
-import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 import { BiBuilding, BiDollar } from "react-icons/bi";
@@ -8,42 +9,37 @@ import { FaLocationDot } from "react-icons/fa6";
 
 const VacancyCard = ({ data }: VacancyProps) => {
   return (
-    <Link href={`/vacancy/${data?.id}`}>
-      <Box id="card-vacancy" borderWidth="1px" rounded="md" p="2">
-        <Flex alignItems="start" gap="2">
-          <Image
-            rounded="md"
-            src={`http://127.0.0.1:3000/${data?.company?.photo}`}
-            width="150px"
-            height="150px"
-          />
-
+    <Link href={`/vacancy/${data?.id}`} className="w-96">
+      <Box id="card-vacancy" borderWidth="1px" rounded="md" p="2" w="full">
+        <Stack gap="2">
           <div className="w-full">
             <Flex gap="2" alignItems="center" justifyContent="space-between">
               <Text fontSize="xl" fontWeight="bolder">
                 {data.name_vacancy}
               </Text>
-              <Badge colorPalette="green">{data?.status}</Badge>
+              <Text fontSize="xs">Gaji {useCurrency(data?.salary)}</Text>
             </Flex>
-            <Flex gap="2" alignItems="center">
-              <BiDollar />
-              <Text fontSize="xs">{data?.salary}</Text>
-            </Flex>
-            <Flex gap="2" alignItems="center">
-              <BiBuilding />
-              <Text fontSize="xs">{data?.company.company_name}</Text>-
-              <Text fontSize="xs">{data?.type}</Text>
-            </Flex>
-            <Flex gap="2" alignItems="center">
-              <FaLocationDot />
-              <Text fontSize="xs">{data?.location}</Text>
-            </Flex>
-            <Flex gap="4" alignItems="center">
-              <Text fontSize="xs">{useDate(data.date_start)}</Text>-
-              <Text fontSize="xs">{useDate(data.date_start)}</Text>
+            <Flex gap="2" my="1">
+              <Badge>{data?.type}</Badge>
+              <Badge>{data?.category}</Badge>
             </Flex>
           </div>
-        </Flex>
+          <Flex borderBottomWidth="1px" alignItems="center" gap="2" my="1">
+            <Image
+              rounded="sm"
+              src={`http://127.0.0.1:3000/${data?.company?.photo}`}
+              width="50px"
+              height="50px"
+            />
+            <div>
+              <Text fontSize="sm" fontWeight="bold">
+                {data?.company.company_name}
+              </Text>
+              <Text fontSize="xs">{data?.location}</Text>
+            </div>
+          </Flex>
+          <Text fontSize="xs">Berakhir pada {useDate(data.date_start)}</Text>
+        </Stack>
       </Box>
     </Link>
   );
