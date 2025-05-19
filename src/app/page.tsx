@@ -1,13 +1,18 @@
 "use client";
 import VacancyCard from "@/components/card/VacancyCard";
+import PaginationCommon from "@/components/common/Pagination";
 import Filter from "@/components/navigation/Filter";
 import { useFetch } from "@/hooks/useFetch";
-import MainLayout from "@/layouts/MainLayout";
+import LayoutUnAuthentication from "@/layouts/LayoutUnAuthentication";
+import { Flex } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 const DashboardPage = () => {
   const params = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPage = 10;
+
   const { data } = useFetch(
     `${process.env.NEXT_PUBLIC_API}/vacancy?
     ` +
@@ -17,17 +22,30 @@ const DashboardPage = () => {
       `&location=${params.get("location") || ""}`
   );
 
+  const totalPages = Math.ceil((data?.data?.length || 0) / itemsPage);
+  const currentItems =
+    data?.data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) ||
+    [];
   return (
-    <MainLayout>
+    <LayoutUnAuthentication>
       <div className="flex gap-4">
         <Filter />
-        <div className="grid grid-cols-2 gap-4">
-          {data.data?.map((item, index) => (
-            <VacancyCard key={index} data={item} />
-          ))}
+        <div>
+          <div className="grid grid-cols-2 gap-4">
+            {currentItems?.map((item, index) => (
+              <VacancyCard key={index} data={item} />
+            ))}
+          </div>
+          <Flex justifyContent="center">
+            <PaginationCommon
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </Flex>
         </div>
       </div>
-    </MainLayout>
+    </LayoutUnAuthentication>
   );
 };
 

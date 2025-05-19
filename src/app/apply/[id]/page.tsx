@@ -1,14 +1,23 @@
 "use client";
 import ApplicationCard from "@/components/card/ApplicationCard";
+import PaginationCommon from "@/components/common/Pagination";
 import { useFetch } from "@/hooks/useFetch";
 import MainLayout from "@/layouts/MainLayout";
-import { Breadcrumb, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import { Breadcrumb, Flex, Stack, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
 
 const ProfileApplyPage = () => {
   const { data } = useFetch(
     `${process.env.NEXT_PUBLIC_API}/application?user=1`
   );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPage = 5;
+  const totalPages = Math.ceil((data?.data?.length || 0) / itemsPage);
+  const currentItems =
+    data?.data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) ||
+    [];
+
   return (
     <MainLayout>
       <Breadcrumb.Root my="5">
@@ -26,10 +35,17 @@ const ProfileApplyPage = () => {
           Total application : {data?.data?.length}
         </Text>
         <Stack>
-          {data?.data?.map((item, index) => (
+          {currentItems.map((item, index) => (
             <ApplicationCard data={item} key={index} />
           ))}
         </Stack>
+        <Flex justifyContent="center">
+          <PaginationCommon
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </Flex>
       </Stack>
     </MainLayout>
   );

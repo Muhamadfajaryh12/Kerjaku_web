@@ -1,79 +1,59 @@
 "use client";
-import {
-  InputGroup,
-  Input,
-  Text,
-  Flex,
-  Button,
-  Menu,
-  Portal,
-} from "@chakra-ui/react";
+import { Text, Flex, Button, Menu, Portal } from "@chakra-ui/react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import { BiSearch } from "react-icons/bi";
+import React from "react";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const auth = Cookies.get("token");
-  const [keyword, setKeyword] = useState();
+  const id = localStorage.getItem("id");
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const handleKeyDown = (e) => {
-    if (e.key == "Enter") {
-      handleSearch();
-    }
-  };
-
-  const handleSearch = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (keyword) {
-      params.set("search", keyword);
-    } else {
-      params.delete("search");
-    }
-    router.push(`?${params.toString()}`);
+  const Logout = () => {
+    Cookies.remove("token");
+    localStorage.removeItem("id");
+    router.push("/login");
   };
   return (
-    <Flex borderWidth="1px" justifyContent="space-between" alignItems="center">
-      <Text fontWeight="bold" fontSize="2xl" mx="2">
-        KerjaKu
-      </Text>
-      <div className="min-w-lg max-w-xl p-6">
-        <InputGroup startElement={<BiSearch />} p="2">
-          <Input
-            placeholder="Search"
-            size="md"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-        </InputGroup>
-      </div>
+    <Flex borderWidth="1px" justifyContent="space-around" alignItems="center">
+      <Flex gap="4" alignItems="center">
+        <Text fontWeight="bold" fontSize="2xl" mx="2">
+          KerjaKu
+        </Text>
+        <Link href="/">Vacancy</Link>
+        <Link href="/">Company</Link>
+      </Flex>
       {auth ? (
-        <Menu.Root>
-          <Menu.Trigger asChild>
-            <Text>Action</Text>
-          </Menu.Trigger>
-          <Portal>
-            <Menu.Positioner>
-              <Menu.Content>
-                <Menu.Item value="new-txt-a">
-                  <Link href="">Profile</Link>
-                </Menu.Item>
-                <Menu.Item value="new-txt-b">
-                  <Link href="">Lamaran Pekerjaan</Link>
-                </Menu.Item>
-                <Menu.Item value="new-txt-c">
-                  <Link href="">Logout</Link>
-                </Menu.Item>
-              </Menu.Content>
-            </Menu.Positioner>
-          </Portal>
-        </Menu.Root>
+        <Flex alignItems="center" gap="4" p="2">
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <Text>Action</Text>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  <Menu.Item value="new-txt-a">
+                    <Link href="">Profile</Link>
+                  </Menu.Item>
+                  <Menu.Item value="new-txt-b">
+                    <Link href={`/apply/${id}`}>Lamaran Pekerjaan</Link>
+                  </Menu.Item>
+                  <Menu.Item value="new-txt-c">
+                    {/* <Link href="">Logout</Link> */}
+                    <Button onClick={() => Logout()}>Logout</Button>
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+          <Button asChild variant="outline" colorPalette="blue">
+            <Link href="/">
+              <Text fontWeight="bold">To Company</Text>
+            </Link>
+          </Button>
+        </Flex>
       ) : (
-        <Flex gap="2">
+        <Flex gap="2" p="2">
           <Button asChild variant="outline" colorPalette="gray" size="sm">
             <Link href="/login">Login</Link>
           </Button>
