@@ -1,7 +1,10 @@
 "use client";
+import { toaster } from "@/components/ui/toaster";
+import { useFetch } from "@/hooks/useFetch";
 import { useLocalStorate } from "@/hooks/useLocalStorage";
 import MainLayout from "@/layouts/MainLayout";
 import ProfileAPI from "@/services/ProfileAPI";
+import { ProfileProps } from "@/types/ProfileProps";
 import {
   Badge,
   Box,
@@ -19,8 +22,9 @@ import {
   Select,
   Stack,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LuFileImage, LuFileUp } from "react-icons/lu";
 
@@ -33,17 +37,40 @@ const skillsData = createListCollection({
 });
 
 const ProfileFormPage = () => {
+  const params = useParams();
   const [skills, setSkills] = useState([]);
   const [cv, setCV] = useState<File | null>(null);
   const [nameCV, setNameCV] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoURL, setPhotoURL] = useState("");
   const router = useRouter();
+
+  const { data } = useFetch(
+    `${process.env.NEXT_PUBLIC_API}/profile/${params.id}`
+  );
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
+
+  useEffect(() => {
+    if (data) {
+      reset({
+        nama: data.name,
+        ringkasan: data.summary,
+        email: data.email,
+        alamat: data.address,
+        pendidikan: data.education,
+        phone: data.phone,
+        tanggal_lahir: data.birth?.split("T")[0],
+      });
+      setSkills(data.skills);
+      setPhotoURL(`http://127.0.0.1:3000/${data?.photo}`);
+      setNameCV(`${data?.cv}`);
+    }
+  }, [reset, data]);
   const id = useLocalStorate("id");
   const handleChangeSkills = (data: string) => {
     if (data) {
@@ -70,23 +97,29 @@ const ProfileFormPage = () => {
     }
   };
 
-  const submitForm = async (data) => {
+  const submitForm = async (dataForm) => {
     const formData = new FormData();
-    formData.append("name", data.nama);
-    formData.append("summary", data.ringkasan);
-    formData.append("email", data.email);
-    formData.append("address", data.alamat);
-    formData.append("education", data.pendidikan);
-    formData.append("birth", new Date(data.tanggal_lahir).toISOString());
-    formData.append("phone", data.phone);
+    formData.append("name", dataForm.nama);
+    formData.append("summary", dataForm.ringkasan);
+    formData.append("email", dataForm.email);
+    formData.append("address", dataForm.alamat);
+    formData.append("education", dataForm.pendidikan);
+    formData.append("birth", new Date(dataForm.tanggal_lahir).toISOString());
+    formData.append("phone", dataForm.phone);
     formData.append("skills", skills);
     formData.append("cv", cv);
     formData.append("photo", photo);
     formData.append("id_user", id);
 
-    const response = await ProfileAPI.InsertProfile({ formData: formData });
-    if (response?.status == 201) {
-      router.push(`/profile/${id}`);
+    const response = await ProfileAPI.UpdateProfile({
+      formData: formData,
+      id: data.id,
+    });
+    if (response?.status == 200) {
+      toaster.create({
+        title: response.message,
+        type: "success",
+      });
     }
   };
 
@@ -213,7 +246,6 @@ const ProfileFormPage = () => {
               </Flex>
               <FileUpload.Root
                 gap="1"
-                size="lg"
                 onChange={(e) => handleCV(e.target?.files[0])}
               >
                 <FileUpload.HiddenInput />
@@ -240,6 +272,11 @@ const ProfileFormPage = () => {
                   </Input>
                 </InputGroup>
               </FileUpload.Root>
+              <Button colorPalette="red" asChild>
+                <Link href={`http://127.0.0.1:3000/${nameCV}`} target="_blank">
+                  LIHAT CV
+                </Link>
+              </Button>
               <div>
                 <Select.Root
                   collection={skillsData}

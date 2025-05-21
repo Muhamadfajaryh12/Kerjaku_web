@@ -1,5 +1,6 @@
 "use client";
 import { toaster } from "@/components/ui/toaster";
+import { useLocalStorate } from "@/hooks/useLocalStorage";
 import MainLayout from "@/layouts/MainLayout";
 import ExperienceAPI from "@/services/ExperienceAPI";
 import {
@@ -15,6 +16,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 const ExperienceForm = () => {
+  const id_profile = useLocalStorate("id_profile");
   const {
     register,
     formState: { errors },
@@ -30,7 +32,7 @@ const ExperienceForm = () => {
       date_start: new Date(data.date_start).toISOString(),
       date_end: new Date(data.date_end).toISOString(),
       description: data.description,
-      id_user: parseInt(localStorage.getItem("id")),
+      id_profile: parseInt(id_profile),
     });
     console.log(response);
     if (response?.status == 201) {

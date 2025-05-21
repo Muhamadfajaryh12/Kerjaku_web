@@ -7,7 +7,7 @@ export const useFetch = (url: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const token = Cookies.get("token");
-
+  console.log(url);
   const fetch = async () => {
     try {
       const response = await axios.get(url, {
@@ -16,7 +16,6 @@ export const useFetch = (url: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       setData(response.data.data);
     } catch (error) {
       setError(axios.isAxiosError(error) ? error.response?.message : "error");

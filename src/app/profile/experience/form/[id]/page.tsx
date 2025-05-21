@@ -1,6 +1,7 @@
 "use client";
 import { toaster } from "@/components/ui/toaster";
 import { useFetch } from "@/hooks/useFetch";
+import { useLocalStorate } from "@/hooks/useLocalStorage";
 import MainLayout from "@/layouts/MainLayout";
 import ExperienceAPI from "@/services/ExperienceAPI";
 import {
@@ -18,9 +19,10 @@ import { useForm } from "react-hook-form";
 
 const ExperienceUpdateForm = () => {
   const params = useParams();
-  const {
-    data: { data },
-  } = useFetch(`${process.env.NEXT_PUBLIC_API}/experience/${params.id}`);
+  const IdProfile = useLocalStorate("id_profile");
+  const { data } = useFetch(
+    `${process.env.NEXT_PUBLIC_API}/experience/${params.id}`
+  );
 
   const {
     register,
@@ -59,7 +61,7 @@ const ExperienceUpdateForm = () => {
       date_start: new Date(data.date_start).toISOString(),
       date_end: new Date(data.date_end).toISOString(),
       description: data.description,
-      id_user: parseInt(localStorage.getItem("id")),
+      id_profile: parseInt(IdProfile),
       id: parseInt(params.id),
     });
     if (response?.status == 200) {

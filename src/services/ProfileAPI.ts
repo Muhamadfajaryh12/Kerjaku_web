@@ -14,6 +14,9 @@ const ProfileAPI = (() => {
         },
       });
       console.log(response);
+      if (response.status == 201) {
+        localStorage.setItem("id_profile", response.data.data.id);
+      }
       return {
         status: response.status,
         message: response.data.message,
@@ -37,7 +40,7 @@ const ProfileAPI = (() => {
     formData: FormDataProps;
   }) => {
     try {
-      const response = await axios.post(`${BASE_URL}/profile/${id}`, formData, {
+      const response = await axios.put(`${BASE_URL}/profile/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

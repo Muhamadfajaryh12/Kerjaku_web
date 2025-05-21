@@ -37,9 +37,7 @@ const ProfilePage = () => {
         ...prevData,
         data: {
           ...prevData?.data,
-          experience: prevData?.data?.experience.filter(
-            (item) => item.id !== id
-          ),
+          experience: prevData?.experience.filter((item) => item.id !== id),
         },
       }));
     }
@@ -50,12 +48,12 @@ const ProfilePage = () => {
         <Breadcrumb.List>
           <Breadcrumb.Item>Profile</Breadcrumb.Item>
           <Breadcrumb.Separator />
-          <Breadcrumb.Item>{data?.data?.name}</Breadcrumb.Item>
+          <Breadcrumb.Item>{data?.name}</Breadcrumb.Item>
         </Breadcrumb.List>
       </Breadcrumb.Root>
-      <Flex gap="4" justifyContent="center">
+      <Flex gap="6" justifyContent="center" mt="4">
         <Image
-          src={`http://127.0.0.1:3000/${data?.data?.photo}`}
+          src={`http://127.0.0.1:3000/${data?.photo}`}
           width="200px"
           height="200px"
           rounded="sm"
@@ -64,25 +62,25 @@ const ProfilePage = () => {
           <Stack>
             <Flex justifyContent="space-between">
               <Text fontSize="xl" fontWeight="bold">
-                {data?.data?.name}
+                {data?.name}
               </Text>
               <Button asChild size="xs">
-                <Link href="/profile/form">
+                <Link href={`/profile/form/${data?.id_user}`}>
                   <FaPencil />
                 </Link>
               </Button>
             </Flex>
             <Flex alignItems={"center"} gap="3">
               <FaLocationDot />
-              <Text>{data?.data?.address}</Text>
+              <Text>{data?.address}</Text>
             </Flex>
             <Flex alignItems={"center"} gap="3">
               <FaMessage />
-              <Text>{data?.data?.email}</Text>
+              <Text>{data?.email}</Text>
             </Flex>
             <Flex alignItems={"center"} gap="3">
               <FaPhone />
-              <Text>{data?.data?.phone}</Text>
+              <Text>{data?.phone}</Text>
             </Flex>
           </Stack>
           <Stack gap="2">
@@ -90,14 +88,14 @@ const ProfilePage = () => {
               Summary
             </Text>
             <Box rounded="sm" borderWidth="1px" p="4">
-              <Text>{data?.data?.summary}</Text>
+              <Text>{data?.summary}</Text>
             </Box>
           </Stack>
           <Stack gap="2">
             <Text fontSize="xl" fontWeight="bold">
               Experience
             </Text>
-            {data?.data?.experience.map((item, index) => (
+            {data?.experience?.map((item, index) => (
               <ExperienceCard
                 data={item}
                 onDelete={deleteExperience}
@@ -115,7 +113,7 @@ const ProfilePage = () => {
             <Box rounded="sm" borderWidth="1px" p="4">
               <Flex alignItems={"center"} gap="2">
                 <BiSolidFilePdf color="red" size={20} />
-                <Text>{data?.data?.cv}</Text>
+                <Text>{data?.cv}</Text>
               </Flex>
             </Box>
           </Stack>

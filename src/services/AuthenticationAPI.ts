@@ -36,6 +36,9 @@ const AuthenticationAPI = (() => {
       });
 
       localStorage.setItem("id", response.data.id);
+      if (response.data.id_profile != 0) {
+        localStorage.setItem("id_profile", response.data.id_profile);
+      }
 
       return {
         status: response.status,

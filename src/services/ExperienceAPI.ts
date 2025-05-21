@@ -13,7 +13,7 @@ const ExperienceAPI = (() => {
     date_start,
     date_end,
     description,
-    id_user,
+    id_profile,
   }: ExperienceProps) => {
     try {
       const response = await axios.post(`${BASE_URL}/experience`, {
@@ -23,7 +23,7 @@ const ExperienceAPI = (() => {
         date_start,
         date_end,
         description,
-        id_user,
+        id_profile,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const ExperienceAPI = (() => {
     date_start,
     date_end,
     description,
-    id_user,
+    id_profile,
     id,
   }: ExperienceProps) => {
     try {
@@ -62,7 +62,7 @@ const ExperienceAPI = (() => {
         date_start,
         date_end,
         description,
-        id_user,
+        id_profile,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

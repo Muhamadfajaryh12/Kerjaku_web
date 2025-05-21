@@ -5,6 +5,6 @@ export interface ExperienceProps {
   date_start: string;
   date_end: string;
   description: string;
-  id_user: number;
+  id_profile: number;
   id?: number;
 }
