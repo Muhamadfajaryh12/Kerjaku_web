@@ -5,14 +5,13 @@ import React from "react";
 
 const VacancyAdminPage = () => {
   return (
-    <CompanyLayout>
+    <CompanyLayout title="Vacancy">
       <div>
         <ButtonLink
           name="Membuat Vacancy"
           type="button"
           link="/company/admin/vacancy/form"
         />
-        <VacancyCard />
       </div>
     </CompanyLayout>
   );

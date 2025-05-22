@@ -1,16 +1,36 @@
 import React from "react";
 import LayoutProps from "../types/layout/Layout";
 import Sidebar from "../components/navigation/Sidebar";
+import { Box, Breadcrumb, Container, Flex } from "@chakra-ui/react";
+import { usePathname } from "next/navigation";
 
 const CompanyLayout = ({ children }: LayoutProps) => {
+  const path = usePathname();
+  const result = path.split("/").filter((segment) => segment !== "");
   return (
-    <div className="flex ">
+    <Flex>
       <Sidebar />
-      <div className="mx-auto my-4 p-4 min-w-7xl">
-        <h1 className="text-3xl font-extrabold mb-4">Vacancy</h1>
-        {children}
-      </div>
-    </div>
+      <Box width="full">
+        <Box width="full" p="2" borderBottomWidth="1px">
+          <Breadcrumb.Root>
+            <Breadcrumb.List>
+              {result?.map((item, index) => (
+                <React.Fragment key={index}>
+                  <Breadcrumb.Item
+                    fontWeight="semibold"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {item}
+                  </Breadcrumb.Item>
+                  {index < result.length - 1 && <Breadcrumb.Separator />}
+                </React.Fragment>
+              ))}
+            </Breadcrumb.List>
+          </Breadcrumb.Root>
+        </Box>
+        <Container p="5">{children}</Container>
+      </Box>
+    </Flex>
   );
 };
 

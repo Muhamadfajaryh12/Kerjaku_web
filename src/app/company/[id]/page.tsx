@@ -4,12 +4,15 @@ import { useFetch } from "@/hooks/useFetch";
 import { useLocalStorate } from "@/hooks/useLocalStorage";
 import DetailLayout from "@/layouts/DetailLayout";
 import { Box, Container, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import { useParams } from "next/navigation";
 import React from "react";
 import { FaLocationDot, FaPeopleGroup } from "react-icons/fa6";
 
 const CompanyDetailPage = () => {
-  const id = useLocalStorate("id");
-  const { data } = useFetch(`${process.env.NEXT_PUBLIC_API}/company/${id}`);
+  const params = useParams();
+  const { data } = useFetch(
+    `${process.env.NEXT_PUBLIC_API}/company/${params.id}`
+  );
 
   return (
     <DetailLayout>
@@ -44,12 +47,14 @@ const CompanyDetailPage = () => {
         </Flex>
       </Container>
       <Container mt="10">
-        <Text>Vacancy</Text>
-        <Stack>
+        <Text fontWeight="bold" my="5" fontSize="xl">
+          Vacancy
+        </Text>
+        <div className="grid grid-cols-4 gap-3">
           {data?.vacancy?.map((item, index) => (
             <VacancyCard key={index} data={item} />
           ))}
-        </Stack>
+        </div>
       </Container>
     </DetailLayout>
   );

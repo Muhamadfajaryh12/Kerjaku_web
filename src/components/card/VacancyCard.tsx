@@ -9,12 +9,12 @@ import { FaLocationDot } from "react-icons/fa6";
 
 const VacancyCard = ({ data }: VacancyProps) => {
   return (
-    <Link href={`/vacancy/${data?.id}`} className="w-96">
+    <Link href={`/vacancy/${data?.id}`} className="w-full">
       <Box id="card-vacancy" borderWidth="1px" rounded="md" p="2" w="full">
         <Stack gap="2">
           <div className="w-full">
             <Flex gap="2" alignItems="center" justifyContent="space-between">
-              <Text fontSize="xl" fontWeight="bolder">
+              <Text fontSize="xl" fontWeight="bolder" truncate maxWidth="200px">
                 {data.name_vacancy}
               </Text>
               <Text fontSize="xs">Gaji {useCurrency(data?.salary)}</Text>

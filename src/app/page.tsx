@@ -21,7 +21,7 @@ const DashboardPage = () => {
       `&type=${params.get("type") || ""}` +
       `&location=${params.get("location") || ""}`
   );
-
+  console.log(data);
   const totalPages = Math.ceil((data?.length || 0) / itemsPage);
   const currentItems =
     data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) || [];
@@ -30,7 +30,7 @@ const DashboardPage = () => {
       <div className="flex gap-4">
         <Filter />
         <div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {currentItems?.map((item, index) => (
               <VacancyCard key={index} data={item} />
             ))}
