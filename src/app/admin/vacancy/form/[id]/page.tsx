@@ -22,9 +22,15 @@ import {
 import VacancyAPI from "@/services/VacancyAPI";
 import { useLocalStorate } from "@/hooks/useLocalStorage";
 import { toaster } from "@/components/ui/toaster";
+import { useParams } from "next/navigation";
+import { useFetch } from "@/hooks/useFetch";
 
 const FormAdminVacancy = () => {
   const IdCompany = useLocalStorate("id_company");
+  const params = useParams();
+  const { data } = useFetch(
+    `${process.env.NEXT_PUBLIC_API}/vacancy/${params.id}`
+  );
 
   const {
     register,
@@ -35,36 +41,47 @@ const FormAdminVacancy = () => {
   } = useForm();
 
   useEffect(() => {
-    reset({
-      date_start: new Date().toISOString().split("T")[0],
-      status: "Open",
-    });
-  }, [reset]);
+    if (data) {
+      reset({
+        name_vacancy: data.name_vacancy,
+        location: data.location,
+        salary: data.salary,
+        qty: data.qty,
+        description: data.description,
+        date_start: data.date_start?.split("T")[0],
+        date_end: data.date_end?.split("T")[0],
+        type: data?.type,
+        category: data?.category,
+        experience_time: data.experience_time,
+        education: data.education,
+        site: data.at_where,
+      });
+    }
+  }, [data, reset]);
 
   const submitVacancy = async (data) => {
-    const response = await VacancyAPI.InsertVacancy({
-      name_vacancy: data.name_vacancy,
-      location: data.location,
-      description: data.description,
-      salary: data.salary,
-      qty: data.qty,
-      at_where: data.site,
-      category: data.category,
-      education: data.education,
-      type: data.type,
-      experience_time: data.experience_time,
-      status: data.status,
-      date_start: new Date(data.date_start).toISOString(),
-      date_end: new Date(data.date_end).toISOString(),
-      id_company: parseInt(IdCompany),
-    });
-    if (response?.status == 201) {
-      toaster.create({
-        title: response?.message,
-        type: "success",
-      });
-      reset();
-    }
+    // const response = await VacancyAPI.UpdateVacancy({
+    //   name_vacancy: data.name_vacancy,
+    //   location: data.location,
+    //   description: data.description,
+    //   salary: data.salary,
+    //   qty: data.qty,
+    //   at_where: data.site,
+    //   category: data.category,
+    //   education: data.education,
+    //   type: data.type,
+    //   experience_time: data.experience_time,
+    //   date_start: new Date(data.date_start).toISOString(),
+    //   date_end: new Date(data.date_end).toISOString(),
+    //   id_company: parseInt(IdCompany),
+    // });
+    // if (response?.status == 201) {
+    //   toaster.create({
+    //     title: response?.message,
+    //     type: "success",
+    //   });
+    //   reset();
+    // }
   };
   return (
     <CompanyLayout title="Vacancy">
@@ -124,8 +141,8 @@ const FormAdminVacancy = () => {
                   render={({ field }) => (
                     <Select.Root
                       name={field.name}
-                      value={field.value}
-                      onValueChange={({ value }) => field.onChange(value)}
+                      value={[field.value]}
+                      onValueChange={({ value }) => field.onChange(value[0])}
                       onInteractOutside={() => field.onBlur()}
                       collection={typeData}
                     >
@@ -142,7 +159,11 @@ const FormAdminVacancy = () => {
                         <Select.Positioner>
                           <Select.Content>
                             {typeData.items.map((item) => (
-                              <Select.Item item={item} key={item.value}>
+                              <Select.Item
+                                item={item}
+                                key={item.value}
+                                selected={item.value === field.value}
+                              >
                                 {item.label}
                                 <Select.ItemIndicator />
                               </Select.Item>
@@ -163,8 +184,8 @@ const FormAdminVacancy = () => {
                   render={({ field }) => (
                     <Select.Root
                       name={field.name}
-                      value={field.value}
-                      onValueChange={({ value }) => field.onChange(value)}
+                      value={[field.value]}
+                      onValueChange={({ value }) => field.onChange(value[0])}
                       onInteractOutside={() => field.onBlur()}
                       collection={categoryJobData}
                     >
@@ -199,11 +220,12 @@ const FormAdminVacancy = () => {
                 <Controller
                   control={control}
                   name="site"
+                  defaultValue={data?.at_where}
                   render={({ field }) => (
                     <Select.Root
                       name={field.name}
-                      value={field.value}
-                      onValueChange={({ value }) => field.onChange(value)}
+                      value={[field.value]}
+                      onValueChange={({ value }) => field.onChange(value[0])}
                       onInteractOutside={() => field.onBlur()}
                       collection={siteData}
                     >
@@ -243,8 +265,8 @@ const FormAdminVacancy = () => {
                   render={({ field }) => (
                     <Select.Root
                       name={field.name}
-                      value={field.value}
-                      onValueChange={({ value }) => field.onChange(value)}
+                      value={[field.value]}
+                      onValueChange={({ value }) => field.onChange(value[0])}
                       onInteractOutside={() => field.onBlur()}
                       collection={educationData}
                     >
@@ -282,8 +304,8 @@ const FormAdminVacancy = () => {
                   render={({ field }) => (
                     <Select.Root
                       name={field.name}
-                      value={field.value}
-                      onValueChange={({ value }) => field.onChange(value)}
+                      value={[field.value]}
+                      onValueChange={({ value }) => field.onChange(value[0])}
                       onInteractOutside={() => field.onBlur()}
                       collection={experienceTimeData}
                     >
@@ -350,16 +372,6 @@ const FormAdminVacancy = () => {
                 />
                 <Field.ErrorText>{errors.date_end?.message}</Field.ErrorText>
               </Field.Root>
-              <Field.Root invalid={!!errors.status}>
-                <Field.Label>Status</Field.Label>
-                <Input
-                  {...register("status")}
-                  size="md"
-                  value={"Open"}
-                  disabled
-                />
-                <Field.ErrorText>{errors.status?.message}</Field.ErrorText>
-              </Field.Root>{" "}
             </Flex>
             <Button type="submit">Submit</Button>
           </Stack>

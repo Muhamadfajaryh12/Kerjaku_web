@@ -10,8 +10,8 @@ export const skillsData = createListCollection({
 
 export const typeData = createListCollection({
   items: [
-    { label: "Full-time", value: "Full-time" },
-    { label: "Part-time", value: "Part-time" },
+    { label: "Full Time", value: "Full Time" },
+    { label: "Part Time", value: "Part Time" },
     { label: "Internship", value: "Internship" },
     { label: "Freelance", value: "Freelance" },
   ],
@@ -51,5 +51,12 @@ export const experienceTimeData = createListCollection({
     { label: "3-4 Year", value: "3-4 Year" },
     { label: "5 Year", value: "5 Year" },
     { label: "Expert", value: "Expert" },
+  ],
+});
+
+export const statusData = createListCollection({
+  items: [
+    { label: "Open", value: "Open" },
+    { label: "Close", value: "Close" },
   ],
 });

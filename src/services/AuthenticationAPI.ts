@@ -40,6 +40,10 @@ const AuthenticationAPI = (() => {
         localStorage.setItem("id_profile", response.data.id_profile);
       }
 
+      if (response.data.id_company != 0) {
+        localStorage.setItem("id_company", response.data.id_company);
+      }
+
       return {
         status: response.status,
         token: response.data.token,

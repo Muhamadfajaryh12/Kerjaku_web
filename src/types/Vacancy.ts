@@ -15,3 +15,21 @@ export interface VacancyProps {
   id_company: number;
   company: CompanyResponseProps;
 }
+
+export interface VacancyInputProps {
+  id?: number;
+  name_vacancy: string;
+  description: string;
+  location: string;
+  qty: number;
+  salary: number;
+  date_end: string;
+  status?: string;
+  at_where: string;
+  category: string;
+  experience_time: string;
+  education: string;
+  type: string;
+  date_start: string;
+  id_company: number;
+}
