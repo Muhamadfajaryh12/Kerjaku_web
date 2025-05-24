@@ -89,6 +89,7 @@ const VacancyAPI = (() => {
     at_where,
     category,
     type,
+    status,
     education,
     experience_time,
     date_start,
@@ -108,6 +109,7 @@ const VacancyAPI = (() => {
           at_where,
           category,
           type,
+          status,
           education,
           experience_time,
           date_start,
@@ -121,6 +123,7 @@ const VacancyAPI = (() => {
           },
         }
       );
+      console.log(response);
       return {
         status: response.status,
         message: response.data.message,
@@ -135,10 +138,35 @@ const VacancyAPI = (() => {
       }
     }
   };
+
+  const DeleteVacancy = async (id: number) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/vacancy/${id}`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return {
+        status: response.status,
+        message: response.data.message,
+        id: response.data.data.id,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          status: error.status || 500,
+          message: error.response?.data.message || "Internal Server Error",
+        };
+      }
+    }
+  };
   return {
     GetVacancy,
     InsertVacancy,
     UpdateVacancy,
+    DeleteVacancy,
   };
 })();
 

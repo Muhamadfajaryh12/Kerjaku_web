@@ -34,7 +34,7 @@ const ExperienceForm = () => {
       description: data.description,
       id_profile: parseInt(id_profile),
     });
-    console.log(response);
+
     if (response?.status == 201) {
       reset();
       toaster.create({

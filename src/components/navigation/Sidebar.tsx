@@ -26,17 +26,24 @@ const dataLink = [
 
 const Sidebar = () => {
   const router = usePathname();
-
+  const result = router.split("/").filter((segment) => segment !== "");
   return (
-    <div className="w-48 h-screen shadow-md">
-      <Flex direction="column" justifyContent="space-between" height="full">
-        <Stack gap="3">
+    <div className="w-64 h-screen shadow-md">
+      <Flex
+        direction="column"
+        justifyContent="space-between"
+        height="full"
+        mt="5"
+      >
+        <Stack>
           {dataLink.map((item) => (
             <Box
               key={item.link}
-              p="2"
+              p="3"
               className={`p-4 my-2 text-md hover:bg-black hover:text-white ${
-                router == item.link ? "bg-black text-white" : ""
+                result[1] == item.name.toLocaleLowerCase()
+                  ? "bg-black text-white"
+                  : ""
               }`}
             >
               <Link href={item.link}>

@@ -17,6 +17,7 @@ import {
   educationData,
   experienceTimeData,
   siteData,
+  statusData,
   typeData,
 } from "@/utils/data";
 import VacancyAPI from "@/services/VacancyAPI";
@@ -55,33 +56,35 @@ const FormAdminVacancy = () => {
         experience_time: data.experience_time,
         education: data.education,
         site: data.at_where,
+        status: data.status,
       });
     }
   }, [data, reset]);
 
   const submitVacancy = async (data) => {
-    // const response = await VacancyAPI.UpdateVacancy({
-    //   name_vacancy: data.name_vacancy,
-    //   location: data.location,
-    //   description: data.description,
-    //   salary: data.salary,
-    //   qty: data.qty,
-    //   at_where: data.site,
-    //   category: data.category,
-    //   education: data.education,
-    //   type: data.type,
-    //   experience_time: data.experience_time,
-    //   date_start: new Date(data.date_start).toISOString(),
-    //   date_end: new Date(data.date_end).toISOString(),
-    //   id_company: parseInt(IdCompany),
-    // });
-    // if (response?.status == 201) {
-    //   toaster.create({
-    //     title: response?.message,
-    //     type: "success",
-    //   });
-    //   reset();
-    // }
+    const response = await VacancyAPI.UpdateVacancy({
+      name_vacancy: data.name_vacancy,
+      location: data.location,
+      description: data.description,
+      salary: data.salary,
+      qty: data.qty,
+      at_where: data.site,
+      category: data.category,
+      education: data.education,
+      type: data.type,
+      experience_time: data.experience_time,
+      status: data.status,
+      date_start: new Date(data.date_start).toISOString(),
+      date_end: new Date(data.date_end).toISOString(),
+      id_company: parseInt(IdCompany),
+      id: parseInt(params.id),
+    });
+    if (response?.status == 200) {
+      toaster.create({
+        title: response?.message,
+        type: "success",
+      });
+    }
   };
   return (
     <CompanyLayout title="Vacancy">
@@ -371,6 +374,45 @@ const FormAdminVacancy = () => {
                   type="date"
                 />
                 <Field.ErrorText>{errors.date_end?.message}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root invalid={!!errors.status}>
+                <Field.Label>Status</Field.Label>
+                <Controller
+                  control={control}
+                  name="status"
+                  render={({ field }) => (
+                    <Select.Root
+                      name={field.name}
+                      value={[field.value]}
+                      onValueChange={({ value }) => field.onChange(value[0])}
+                      onInteractOutside={() => field.onBlur()}
+                      collection={statusData}
+                    >
+                      <Select.HiddenSelect />
+                      <Select.Control>
+                        <Select.Trigger>
+                          <Select.ValueText placeholder="Select experience" />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                          <Select.Indicator />
+                        </Select.IndicatorGroup>
+                      </Select.Control>
+                      <Portal>
+                        <Select.Positioner>
+                          <Select.Content>
+                            {statusData.items.map((item) => (
+                              <Select.Item item={item} key={item.value}>
+                                {item.label}
+                                <Select.ItemIndicator />
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select.Positioner>
+                      </Portal>
+                    </Select.Root>
+                  )}
+                />
+                <Field.ErrorText>{errors.status?.message}</Field.ErrorText>
               </Field.Root>
             </Flex>
             <Button type="submit">Submit</Button>

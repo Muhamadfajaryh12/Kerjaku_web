@@ -28,9 +28,10 @@ const ProfilePage = () => {
 
   const deleteExperience = async (id: number) => {
     const response = await ExperienceAPI.DeleteExperience(id);
+    console.log(response);
     if (response?.status == 200) {
       toaster.create({
-        title: response?.message,
+        title: response.message,
         type: "success",
       });
       setData((prevData) => ({
