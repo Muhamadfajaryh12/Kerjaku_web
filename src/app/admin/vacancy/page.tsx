@@ -1,10 +1,13 @@
 "use client";
 import ButtonLink from "@/components/button/ButtonLink";
 import { toaster } from "@/components/ui/toaster";
+import { useDate } from "@/hooks/useDate";
 import { useFetch } from "@/hooks/useFetch";
+import { useLocalStorate } from "@/hooks/useLocalStorage";
 import CompanyLayout from "@/layouts/CompanyLayout";
 import VacancyAPI from "@/services/VacancyAPI";
 import {
+  Badge,
   Button,
   CloseButton,
   Dialog,
@@ -17,7 +20,10 @@ import React from "react";
 import { BiPencil, BiTrash } from "react-icons/bi";
 
 const VacancyAdminPage = () => {
-  const { data, setData } = useFetch(`${process.env.NEXT_PUBLIC_API}/vacancy`);
+  const IdCompany = useLocalStorate("id_company");
+  const { data, setData } = useFetch(
+    `${process.env.NEXT_PUBLIC_API}/vacancy/company/${IdCompany}`
+  );
 
   const onDelete = async (id: number) => {
     const response = await VacancyAPI.DeleteVacancy(id);
@@ -37,11 +43,14 @@ const VacancyAdminPage = () => {
           <Link href="/admin/vacancy/form">Add Vacancy</Link>
         </Button>
       </Flex>
-      <Table.Root size="sm">
+      <Table.Root size="sm" variant="outline">
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>No</Table.ColumnHeader>
             <Table.ColumnHeader>Name Vacancy</Table.ColumnHeader>
+            <Table.ColumnHeader>Type</Table.ColumnHeader>
+            <Table.ColumnHeader>Category</Table.ColumnHeader>
+            <Table.ColumnHeader>Date Close</Table.ColumnHeader>
             <Table.ColumnHeader>Total Applicant</Table.ColumnHeader>
             <Table.ColumnHeader>Action</Table.ColumnHeader>
           </Table.Row>
@@ -51,13 +60,22 @@ const VacancyAdminPage = () => {
             <Table.Row key={item.id}>
               <Table.Cell>{++index}</Table.Cell>
               <Table.Cell>{item.name_vacancy}</Table.Cell>
-              <Table.Cell>10</Table.Cell>
+              <Table.Cell>{item.type}</Table.Cell>
+              <Table.Cell>{item.category}</Table.Cell>
+              <Table.Cell>{useDate(item.date_end)}</Table.Cell>
+              <Table.Cell>
+                <Button asChild size="xs">
+                  <Link href={`/admin/vacancy/apply/${item.id}`}>
+                    Open ({item.application_count})
+                  </Link>
+                </Button>
+              </Table.Cell>
               <Table.Cell>
                 <Flex gap="2">
                   <Button
                     asChild
                     variant="surface"
-                    size="sm"
+                    size="xs"
                     colorPalette="blue"
                   >
                     <Link href={`/admin/vacancy/form/${item.id}`}>

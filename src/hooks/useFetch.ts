@@ -16,6 +16,7 @@ export const useFetch = (url: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response);
       setData(response.data.data);
     } catch (error) {
       setError(axios.isAxiosError(error) ? error.response?.message : "error");

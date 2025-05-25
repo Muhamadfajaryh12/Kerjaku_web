@@ -12,6 +12,7 @@ const Navbar = () => {
   const id = useLocalStorate("id");
   const id_profile = useLocalStorate("id_profile");
   const router = useRouter();
+
   const Logout = () => {
     Cookies.remove("token");
     localStorage.removeItem("id");
@@ -53,7 +54,7 @@ const Navbar = () => {
             </Portal>
           </Menu.Root>
           <Button asChild variant="outline" colorPalette="blue">
-            <Link href="/">
+            <Link href={`/admin`}>
               <Text fontWeight="bold">To Company</Text>
             </Link>
           </Button>

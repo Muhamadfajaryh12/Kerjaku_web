@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -8,17 +8,17 @@ import { MdDashboard, MdSettings, MdWork } from "react-icons/md";
 
 const dataLink = [
   {
-    link: "/company/admin",
+    link: "/admin",
     name: "Dashboard",
     icon: <MdDashboard />,
   },
   {
-    link: "/company/admin/vacancy",
+    link: "/admin/vacancy",
     name: "Vacancy",
     icon: <MdWork />,
   },
   {
-    link: "/company/admin/profile",
+    link: "/admin/profile",
     name: "Profile",
     icon: <MdSettings />,
   },

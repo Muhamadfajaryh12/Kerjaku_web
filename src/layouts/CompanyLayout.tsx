@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import LayoutProps from "../types/layout/Layout";
 import Sidebar from "../components/navigation/Sidebar";

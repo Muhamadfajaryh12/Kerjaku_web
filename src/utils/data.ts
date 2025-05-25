@@ -61,5 +61,13 @@ export const statusData = createListCollection({
   ],
 });
 
-
-
+export const statusApplication = createListCollection({
+  items: [
+    { label: "Waiting", value: "Waiting" },
+    { label: "Assesment", value: "Assesment" },
+    { label: "Interview", value: "Interview" },
+    { label: "Offering", value: "Offering" },
+    { label: "Completed", value: "Completed" },
+    { label: "Reject", value: "Reject" },
+  ],
+});
