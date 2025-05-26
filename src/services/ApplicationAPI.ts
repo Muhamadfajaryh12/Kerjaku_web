@@ -57,14 +57,19 @@ const ApplicationAPI = (() => {
 
   const UpdateApplication = async ({ id, note, status }) => {
     try {
-      const response = await axios.put(`${BASE_URL}/application/${id}`, {
-        note,
-        status,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+      const response = await axios.put(
+        `${BASE_URL}/application/${id}`,
+        {
+          note,
+          status,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response);
       return {
         status: response.status,

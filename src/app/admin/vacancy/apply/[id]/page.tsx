@@ -9,7 +9,6 @@ import {
   Badge,
   Box,
   Button,
-  ButtonGroup,
   CloseButton,
   Dialog,
   Field,
@@ -22,7 +21,6 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -39,6 +37,7 @@ const ApplyAdminPage = () => {
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm();
   const { data } = useFetch(
     `${process.env.NEXT_PUBLIC_API}/application?vacancy=${params.id}`
@@ -49,6 +48,9 @@ const ApplyAdminPage = () => {
     if (response?.status == 200) {
       setDetail(response.data);
       setOpen(true);
+      reset({
+        status: response.data.status,
+      });
     }
   };
 
@@ -66,7 +68,7 @@ const ApplyAdminPage = () => {
     }
   };
   return (
-    <CompanyLayout>
+    <CompanyLayout title={data[0]?.vacancy?.name_vacancy}>
       <Table.Root size="sm" variant="outline">
         <Table.Header>
           <Table.Row>
@@ -89,10 +91,7 @@ const ApplyAdminPage = () => {
                 <Badge>{item?.status}</Badge>
               </Table.Cell>
               <Table.Cell>
-                <Button
-                  size="xs"
-                  onClick={() => handleDetail(item?.profile?.id)}
-                >
+                <Button size="xs" onClick={() => handleDetail(item?.id)}>
                   <BiDetail />
                 </Button>
               </Table.Cell>
@@ -285,7 +284,9 @@ const ApplyAdminPage = () => {
                 <Dialog.ActionTrigger asChild>
                   <Button variant="outline">Cancel</Button>
                 </Dialog.ActionTrigger>
-                <Button>Save</Button>
+                <Button type="button" onClick={handleSubmit(submitUpdate)}>
+                  Save
+                </Button>
               </Dialog.Footer>
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" />

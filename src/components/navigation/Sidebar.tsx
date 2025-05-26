@@ -1,14 +1,14 @@
 "use client";
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { BiLogOut } from "react-icons/bi";
 import { MdDashboard, MdSettings, MdWork } from "react-icons/md";
-
+import Cookies from "js-cookie";
 const dataLink = [
   {
-    link: "/admin",
+    link: "/admin/dashboard",
     name: "Dashboard",
     icon: <MdDashboard />,
   },
@@ -18,15 +18,24 @@ const dataLink = [
     icon: <MdWork />,
   },
   {
-    link: "/admin/profile",
-    name: "Profile",
+    link: "/admin/company",
+    name: "Company",
     icon: <MdSettings />,
   },
 ];
 
 const Sidebar = () => {
-  const router = usePathname();
-  const result = router.split("/").filter((segment) => segment !== "");
+  const path = usePathname();
+  const result = path.split("/").filter((segment) => segment !== "");
+  const router = useRouter();
+  const Logout = () => {
+    Cookies.remove("token");
+    localStorage.removeItem("id");
+    localStorage.removeItem("id_company");
+    localStorage.removeItem("id_profile");
+    router.push("/login");
+  };
+
   return (
     <div className="w-64 h-screen shadow-md">
       <Flex
@@ -55,9 +64,11 @@ const Sidebar = () => {
           ))}
         </Stack>
         <Box p="2" mb="10">
-          <Flex alignItems="center" gap="4">
-            <BiLogOut /> <Text fontWeight="semibold">Logout</Text>
-          </Flex>
+          <Button w="full" onClick={() => Logout()}>
+            <Flex alignItems="center" gap="3">
+              <BiLogOut /> <Text fontWeight="semibold">Logout</Text>
+            </Flex>
+          </Button>
         </Box>
       </Flex>
     </div>

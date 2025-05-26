@@ -71,3 +71,63 @@ export const statusApplication = createListCollection({
     { label: "Reject", value: "Reject" },
   ],
 });
+
+export const indonesianCities = createListCollection({
+  items: [
+    // Sumatra
+    { label: "Banda Aceh", value: "Banda Aceh" },
+    { label: "Medan", value: "Medan" },
+    { label: "Pekanbaru", value: "Pekanbaru" },
+    { label: "Padang", value: "Padang" },
+    { label: "Palembang", value: "Palembang" },
+    { label: "Bandar Lampung", value: "Bandar Lampung" },
+
+    // Java
+    { label: "Jakarta", value: "Jakarta" },
+    { label: "Bandung", value: "Bandung" },
+    { label: "Bogor", value: "Bogor" },
+    { label: "Depok", value: "Depok" },
+    { label: "Tangerang", value: "Tangerang" },
+    { label: "Bekasi", value: "Bekasi" },
+    { label: "Semarang", value: "Semarang" },
+    { label: "Yogyakarta", value: "Yogyakarta" },
+    { label: "Surabaya", value: "Surabaya" },
+    { label: "Malang", value: "Malang" },
+    { label: "Karawang", value: "Karawang" },
+
+    // Kalimantan
+    { label: "Pontianak", value: "Pontianak" },
+    { label: "Palangkaraya", value: "Palangkaraya" },
+    { label: "Banjarmasin", value: "Banjarmasin" },
+    { label: "Balikpapan", value: "Balikpapan" },
+    { label: "Samarinda", value: "Samarinda" },
+
+    // Sulawesi
+    { label: "Makassar", value: "Makassar" },
+    { label: "Manado", value: "Manado" },
+    { label: "Palu", value: "Palu" },
+    { label: "Gorontalo", value: "Gorontalo" },
+
+    // Bali & Nusa Tenggara
+    { label: "Denpasar", value: "Denpasar" },
+    { label: "Mataram", value: "Mataram" },
+    { label: "Kupang", value: "Kupang" },
+
+    // Maluku & Papua
+    { label: "Ambon", value: "Ambon" },
+    { label: "Ternate", value: "Ternate" },
+    { label: "Jayapura", value: "Jayapura" },
+    { label: "Manokwari", value: "Manokwari" },
+  ],
+});
+
+export const typeCompanyData = createListCollection({
+  items: [
+    { label: "Perseroan Terbuka", value: "Perseroan Terbuka" },
+    { label: "Perseroan Tertutup", value: "Perseroan Tertutup" },
+    {
+      label: "Commanditaire Vennootschap",
+      value: "Commanditaire Vennootschap",
+    },
+  ],
+});

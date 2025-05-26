@@ -42,11 +42,14 @@ const CompanyAPI = (() => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response);
       return {
         status: response.status,
         message: response.data.message,
+        data: response.data.data,
       };
     } catch (error) {
+      console.log(error);
       if (axios.isAxiosError(error)) {
         return {
           status: error.status || 500,

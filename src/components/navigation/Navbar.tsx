@@ -16,6 +16,8 @@ const Navbar = () => {
   const Logout = () => {
     Cookies.remove("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("id_company");
+    localStorage.removeItem("id_profile");
     router.push("/login");
   };
 
