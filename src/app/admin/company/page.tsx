@@ -5,6 +5,7 @@ import { useFetch } from "@/hooks/useFetch";
 import { useLocalStorate } from "@/hooks/useLocalStorage";
 import CompanyLayout from "@/layouts/CompanyLayout";
 import CompanyAPI from "@/services/CompanyAPI";
+import { CompanyInputProps, CompanyResponseProps } from "@/types/Company";
 import { indonesianCities, typeCompanyData } from "@/utils/data";
 import {
   Box,
@@ -27,7 +28,7 @@ const ProfileAdminLayout = () => {
   const id = useLocalStorate("id_company");
   const [image, setImage] = useState<File | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const { data, setData } = useFetch(
+  const { data, setData } = useFetch<CompanyResponseProps>(
     `${process.env.NEXT_PUBLIC_API}/company/${id}`
   );
   const {
@@ -36,7 +37,7 @@ const ProfileAdminLayout = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm();
+  } = useForm<CompanyInputProps>();
 
   useEffect(() => {
     if (data) {
@@ -59,7 +60,7 @@ const ProfileAdminLayout = () => {
     }
   };
 
-  const submitUpdateCompany = async (data) => {
+  const submitUpdateCompany = async (data: CompanyInputProps) => {
     const formData = new FormData();
     formData.append("company_name", data.company_name);
     formData.append("size", data.size);
@@ -72,8 +73,8 @@ const ProfileAdminLayout = () => {
       id: id,
       formData: formData,
     });
-    if (response.status == 200) {
-      setData(response.data);
+    if (response?.status == 200) {
+      setData(response?.data);
       toaster.create({
         title: response.message,
         type: "success",

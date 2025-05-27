@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
-export const useFetch = (url: string) => {
-  const [data, setData] = useState([]);
+export const useFetch = <T = any>(url: string) => {
+  const [data, setData] = useState<T | null>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const token = Cookies.get("token");

@@ -12,7 +12,7 @@ export interface FormDataProps {
   formData: FormData;
 }
 
-export interface CompanyResponseProps {
+export type CompanyResponseProps = {
   company_name: string;
   company_type: string;
   location: string;
@@ -21,4 +21,4 @@ export interface CompanyResponseProps {
   photo?: string;
   id_user: number;
   id: number;
-}
+};

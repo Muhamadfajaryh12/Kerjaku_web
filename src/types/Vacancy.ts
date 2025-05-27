@@ -1,4 +1,3 @@
-import { APIResponse } from "./ApiResponse";
 import { CompanyResponseProps } from "./Company";
 
 export interface VacancyProps {
@@ -14,6 +13,8 @@ export interface VacancyProps {
   date_start: string;
   id_company: number;
   company: CompanyResponseProps;
+  application_count?: number;
+  category?: string;
 }
 
 export interface VacancyInputProps {

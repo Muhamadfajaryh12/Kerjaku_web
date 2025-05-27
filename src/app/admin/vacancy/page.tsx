@@ -1,13 +1,12 @@
 "use client";
-import ButtonLink from "@/components/button/ButtonLink";
 import { toaster } from "@/components/ui/toaster";
 import { useDate } from "@/hooks/useDate";
 import { useFetch } from "@/hooks/useFetch";
 import { useLocalStorate } from "@/hooks/useLocalStorage";
 import CompanyLayout from "@/layouts/CompanyLayout";
 import VacancyAPI from "@/services/VacancyAPI";
+import { VacancyProps } from "@/types/Vacancy";
 import {
-  Badge,
   Button,
   CloseButton,
   Dialog,
@@ -21,7 +20,7 @@ import { BiPencil, BiTrash } from "react-icons/bi";
 
 const VacancyAdminPage = () => {
   const IdCompany = useLocalStorate("id_company");
-  const { data, setData } = useFetch(
+  const { data = [], setData } = useFetch<VacancyProps[]>(
     `${process.env.NEXT_PUBLIC_API}/vacancy/company/${IdCompany}`
   );
 
@@ -36,6 +35,12 @@ const VacancyAdminPage = () => {
       setData((prev) => prev.filter((item) => item.id !== id));
     }
   };
+
+  const formattedData = data?.map((item) => ({
+    ...item,
+    formattedDate: useDate(item.date_end),
+  }));
+
   return (
     <CompanyLayout title="Vacancy">
       <Flex justifyContent="end">
@@ -56,7 +61,7 @@ const VacancyAdminPage = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <Table.Row key={item.id}>
               <Table.Cell>{++index}</Table.Cell>
               <Table.Cell>{item.name_vacancy}</Table.Cell>
