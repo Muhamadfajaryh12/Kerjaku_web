@@ -29,8 +29,8 @@ const DashboardPage = () => {
     <LayoutUnAuthentication>
       <div className="flex gap-4">
         <Filter />
-        <div>
-          <div className="grid grid-cols-3 gap-4">
+        <div className="w-full">
+          <div className="grid grid-cols-3 gap-4 w-full">
             {currentItems?.map((item, index) => (
               <VacancyCard key={index} data={item} />
             ))}

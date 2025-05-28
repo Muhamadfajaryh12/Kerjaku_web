@@ -2,9 +2,11 @@
 import ExperienceCard from "@/components/card/ExperienceCard";
 import { toaster } from "@/components/ui/toaster";
 import { useFetch } from "@/hooks/useFetch";
+import { useLocalStorate } from "@/hooks/useLocalStorage";
 import MainLayout from "@/layouts/MainLayout";
 import ApplicationAPI from "@/services/ApplicationAPI";
 import {
+  Badge,
   Box,
   Breadcrumb,
   Button,
@@ -18,7 +20,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSolidFilePdf } from "react-icons/bi";
@@ -26,9 +28,10 @@ import { LuFileUp } from "react-icons/lu";
 
 const FormApplicationVacancyPage = () => {
   const params = useParams();
-  const idUser = localStorage.getItem("id");
+  const idUser = useLocalStorate("id");
+  const idProfile = useLocalStorate("id_profile");
   const { data } = useFetch(`${process.env.NEXT_PUBLIC_API}/profile/${idUser}`);
-
+  const router = useRouter();
   const [coverLetter, setCoverLetter] = useState<File | null>();
   const handleCoverLetter = (data: File) => {
     if (data) {
@@ -39,19 +42,19 @@ const FormApplicationVacancyPage = () => {
   const { register, handleSubmit, reset } = useForm();
   useEffect(() => {
     reset({
-      name: data?.data?.name,
-      summary: data?.data?.summary,
-      email: data?.data?.email,
-      phone: data?.data?.phone,
-      address: data?.data?.address,
-      education: data?.data?.education,
+      name: data?.name,
+      summary: data?.summary,
+      email: data?.email,
+      phone: data?.phone,
+      address: data?.address,
+      education: data?.education,
     });
   }, [data, reset]);
 
   const submitApplication = async () => {
     const formData = new FormData();
     formData.append("cover_letter", coverLetter);
-    formData.append("id_user", idUser);
+    formData.append("id_profile", idProfile);
     formData.append("id_vacancy", params.id);
 
     const response = await ApplicationAPI.InsertApplication({
@@ -63,13 +66,13 @@ const FormApplicationVacancyPage = () => {
         title: response?.message,
         type: "success",
       });
+      router.push(`/apply/${idProfile}`);
     }
-    console.log(response);
   };
   return (
     <MainLayout>
       <div>
-        <Breadcrumb.Root>
+        <Breadcrumb.Root mb="4">
           <Breadcrumb.List>
             <Breadcrumb.Item>Vacancy</Breadcrumb.Item>
             <Breadcrumb.Separator />
@@ -85,50 +88,64 @@ const FormApplicationVacancyPage = () => {
               <Tabs.Trigger value="file">File</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="biodata">
-              <Stack gap="2">
+              <Stack gap="4">
                 <Field.Root>
-                  <Field.Label>Name</Field.Label>
+                  <Field.Label fontWeight="bold">Name</Field.Label>
                   <Input {...register("name")} size="md" disabled />
                 </Field.Root>
                 <Field.Root>
-                  <Field.Label>Summary</Field.Label>
+                  <Field.Label fontWeight="bold">Summary</Field.Label>
                   <Input {...register("summary")} size="md" disabled />
                 </Field.Root>
-                <Flex gap="2">
+                <Flex gap="4">
                   <Field.Root>
-                    <Field.Label>Email</Field.Label>
+                    <Field.Label fontWeight="bold">Email</Field.Label>
                     <Input {...register("email")} size="md" disabled />
                   </Field.Root>
                   <Field.Root>
-                    <Field.Label>Phone</Field.Label>
+                    <Field.Label fontWeight="bold">Phone</Field.Label>
                     <Input {...register("phone")} size="md" disabled />
                   </Field.Root>
                 </Flex>
-                <Flex>
+                <Flex gap="4">
                   <Field.Root>
-                    <Field.Label>Address</Field.Label>
+                    <Field.Label fontWeight="bold">Address</Field.Label>
                     <Input {...register("address")} size="md" disabled />
                   </Field.Root>
                   <Field.Root>
-                    <Field.Label>Education</Field.Label>
+                    <Field.Label fontWeight="bold">Education</Field.Label>
                     <Input {...register("education")} size="md" disabled />
                   </Field.Root>
                 </Flex>
+                <Box>
+                  <Text fontWeight="bold" mb="2">
+                    Skills
+                  </Text>
+                  <Box borderWidth="1px" rounded="md" p="2">
+                    <Flex gap="3">
+                      {data?.skills?.map((item, index) => (
+                        <Badge size="lg" key={index}>
+                          {item}
+                        </Badge>
+                      ))}
+                    </Flex>
+                  </Box>
+                </Box>
               </Stack>
             </Tabs.Content>
             <Tabs.Content value="experience">
-              {data?.data?.experience.map((item, index) => (
+              {data?.experience?.map((item, index) => (
                 <ExperienceCard data={item} key={index} />
               ))}
             </Tabs.Content>
             <Tabs.Content value="file">
-              <Stack gap="2">
+              <Stack gap="4">
                 <div>
                   <Text fontSize="sm">Circulum Vitae</Text>
-                  <Box rounded="sm" borderWidth="1px" p="4">
+                  <Box rounded="sm" borderWidth="1px" p="2">
                     <Flex alignItems={"center"} gap="2">
                       <BiSolidFilePdf color="red" size={20} />
-                      <Text>{data?.data?.cv}</Text>
+                      <Text fontSize="sm">{data?.cv}</Text>
                     </Flex>
                   </Box>
                 </div>
@@ -137,7 +154,7 @@ const FormApplicationVacancyPage = () => {
                   onChange={(e) => handleCoverLetter(e.target?.files[0])}
                 >
                   <FileUpload.HiddenInput />
-                  <FileUpload.Label>Circulum Vitae</FileUpload.Label>
+                  <FileUpload.Label>Cover Letter</FileUpload.Label>
                   <InputGroup
                     startElement={<LuFileUp />}
                     endElement={
@@ -160,7 +177,11 @@ const FormApplicationVacancyPage = () => {
                     </Input>
                   </InputGroup>
                 </FileUpload.Root>
-                <Button type="submit">Submit</Button>
+                <Flex justifyContent="end">
+                  <Button type="submit" mt="4" w="32">
+                    Submit
+                  </Button>
+                </Flex>
               </Stack>
             </Tabs.Content>
           </Tabs.Root>

@@ -36,11 +36,6 @@ const VacancyAdminPage = () => {
     }
   };
 
-  const formattedData = data?.map((item) => ({
-    ...item,
-    formattedDate: useDate(item.date_end),
-  }));
-
   return (
     <CompanyLayout title="Vacancy">
       <Flex justifyContent="end">

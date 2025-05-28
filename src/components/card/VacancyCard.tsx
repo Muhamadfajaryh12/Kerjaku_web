@@ -17,11 +17,12 @@ const VacancyCard = ({ data }: VacancyProps) => {
               <Text fontSize="xl" fontWeight="bolder" truncate maxWidth="200px">
                 {data.name_vacancy}
               </Text>
-              <Text fontSize="xs">Gaji {useCurrency(data?.salary)}</Text>
+              <Text fontSize="xs"> {useCurrency(data?.salary)}</Text>
             </Flex>
             <Flex gap="2" my="1">
               <Badge>{data?.type}</Badge>
               <Badge>{data?.category}</Badge>
+              <Badge>{data?.education}</Badge>
             </Flex>
           </div>
           <Flex borderBottomWidth="1px" alignItems="center" gap="2" my="1">
@@ -38,7 +39,7 @@ const VacancyCard = ({ data }: VacancyProps) => {
               <Text fontSize="xs">{data?.location}</Text>
             </div>
           </Flex>
-          <Text fontSize="xs">Berakhir pada {useDate(data.date_start)}</Text>
+          <Text fontSize="xs">Close {useDate(data.date_start)}</Text>
         </Stack>
       </Box>
     </Link>

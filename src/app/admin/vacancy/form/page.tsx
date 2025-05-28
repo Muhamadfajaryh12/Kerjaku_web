@@ -361,7 +361,11 @@ const FormAdminVacancy = () => {
                 <Field.ErrorText>{errors.status?.message}</Field.ErrorText>
               </Field.Root>{" "}
             </Flex>
-            <Button type="submit">Submit</Button>
+            <Flex justifyContent="end">
+              <Button type="submit" size="sm" w="32">
+                Submit
+              </Button>
+            </Flex>
           </Stack>
         </form>
       </div>
