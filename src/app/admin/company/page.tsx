@@ -19,6 +19,7 @@ import {
   Stack,
   Textarea,
   Image,
+  Card,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -83,159 +84,177 @@ const ProfileAdminLayout = () => {
   };
   return (
     <CompanyLayout>
-      <div>
-        <form onSubmit={handleSubmit(submitUpdateCompany)}>
-          <Flex gap="4" justifyContent="center">
-            <Stack>
-              {image ? (
-                <Image rounded="sm" src={image} width="350px" height="300px" />
-              ) : (
-                <Box
-                  borderWidth="1px"
-                  rounded="sm"
-                  width="300px"
-                  height="300px"
-                />
-              )}
-              <FileUpload.Root
-                accept="image/*"
-                onChange={(e) => handlePhoto(e.target.files?.[0])}
-              >
-                <FileUpload.HiddenInput />
-                <FileUpload.Trigger asChild>
-                  <Button variant="outline" size="sm" mx="auto">
-                    <LuFileImage /> Upload Image
-                  </Button>
-                </FileUpload.Trigger>
-              </FileUpload.Root>
-            </Stack>
-            <Stack gap="4" w="full">
-              <Field.Root invalid={!!errors.company_name}>
-                <Field.Label fontWeight="bold">Name Company</Field.Label>
-                <Input
-                  {...register("company_name", {
-                    required: "Name Company required",
-                  })}
-                  size="lg"
-                />
-                <Field.ErrorText>
-                  {errors.company_name?.message}
-                </Field.ErrorText>
-              </Field.Root>
-              <Field.Root invalid={!!errors.description}>
-                <Field.Label fontWeight="bold">Description</Field.Label>
-                <Textarea
-                  {...register("description", {
-                    required: "Description required",
-                  })}
-                  size="lg"
-                />
-                <Field.ErrorText>{errors.description?.message}</Field.ErrorText>
-              </Field.Root>
-              <Flex gap="3">
-                <Field.Root invalid={!!errors.location}>
-                  <Field.Label fontWeight="bold">Location</Field.Label>
-                  <Controller
-                    control={control}
-                    name="location"
-                    render={({ field }) => (
-                      <Select.Root
-                        name={field.name}
-                        value={[field.value]}
-                        onValueChange={({ value }) => field.onChange(value[0])}
-                        onInteractOutside={() => field.onBlur()}
-                        collection={indonesianCities}
-                        style={{ zIndex: 9999 }}
-                      >
-                        <Select.HiddenSelect />
-                        <Select.Control>
-                          <Select.Trigger>
-                            <Select.ValueText placeholder="Select location " />
-                          </Select.Trigger>
-                          <Select.IndicatorGroup>
-                            <Select.Indicator />
-                          </Select.IndicatorGroup>
-                        </Select.Control>
-                        <Portal>
-                          <Select.Positioner style={{ zIndex: 9999 }}>
-                            <Select.Content>
-                              {indonesianCities.items.map((item) => (
-                                <Select.Item item={item} key={item.value}>
-                                  {item.label}
-                                  <Select.ItemIndicator />
-                                </Select.Item>
-                              ))}
-                            </Select.Content>
-                          </Select.Positioner>
-                        </Portal>
-                      </Select.Root>
-                    )}
+      <Card.Root>
+        <Card.Header>
+          <Card.Title>Form Update Company</Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <form onSubmit={handleSubmit(submitUpdateCompany)}>
+            <Flex gap="4" justifyContent="center">
+              <Stack>
+                {image ? (
+                  <Image
+                    rounded="sm"
+                    src={image}
+                    width="350px"
+                    height="300px"
                   />
-                  <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
-                </Field.Root>
-                <Field.Root invalid={!!errors.company_type}>
-                  <Field.Label fontWeight="bold">Type</Field.Label>
-                  <Controller
-                    control={control}
-                    name="company_type"
-                    render={({ field }) => (
-                      <Select.Root
-                        name={field.name}
-                        value={[field.value]}
-                        onValueChange={({ value }) => field.onChange(value[0])}
-                        onInteractOutside={() => field.onBlur()}
-                        collection={typeCompanyData}
-                        style={{ zIndex: 9999 }}
-                      >
-                        <Select.HiddenSelect />
-                        <Select.Control>
-                          <Select.Trigger>
-                            <Select.ValueText placeholder="Select type " />
-                          </Select.Trigger>
-                          <Select.IndicatorGroup>
-                            <Select.Indicator />
-                          </Select.IndicatorGroup>
-                        </Select.Control>
-                        <Portal>
-                          <Select.Positioner style={{ zIndex: 9999 }}>
-                            <Select.Content>
-                              {typeCompanyData.items.map((item) => (
-                                <Select.Item item={item} key={item.value}>
-                                  {item.label}
-                                  <Select.ItemIndicator />
-                                </Select.Item>
-                              ))}
-                            </Select.Content>
-                          </Select.Positioner>
-                        </Portal>
-                      </Select.Root>
-                    )}
+                ) : (
+                  <Box
+                    borderWidth="1px"
+                    rounded="sm"
+                    width="300px"
+                    height="300px"
+                  />
+                )}
+                <FileUpload.Root
+                  accept="image/*"
+                  onChange={(e) => handlePhoto(e.target.files?.[0])}
+                >
+                  <FileUpload.HiddenInput />
+                  <FileUpload.Trigger asChild>
+                    <Button variant="outline" size="sm" mx="auto">
+                      <LuFileImage /> Upload Image
+                    </Button>
+                  </FileUpload.Trigger>
+                </FileUpload.Root>
+              </Stack>
+              <Stack gap="4" w="full">
+                <Field.Root invalid={!!errors.company_name}>
+                  <Field.Label fontWeight="bold">Name Company</Field.Label>
+                  <Input
+                    {...register("company_name", {
+                      required: "Name Company required",
+                    })}
+                    size="lg"
                   />
                   <Field.ErrorText>
-                    {errors.company_type?.message}
+                    {errors.company_name?.message}
                   </Field.ErrorText>
                 </Field.Root>
-              </Flex>
-              <Field.Root invalid={!!errors.size}>
-                <Field.Label fontWeight="bold">Size</Field.Label>
-                <Input
-                  {...register("size", {
-                    required: "Size required",
-                  })}
-                  size="lg"
-                  type="number"
-                />
-                <Field.ErrorText>{errors.size?.message}</Field.ErrorText>
-              </Field.Root>
-            </Stack>
-          </Flex>
-          <Flex justifyContent="end ">
-            <Button type="submit" mt="4" size="sm">
-              Save
-            </Button>
-          </Flex>
-        </form>
-      </div>
+                <Field.Root invalid={!!errors.description}>
+                  <Field.Label fontWeight="bold">Description</Field.Label>
+                  <Textarea
+                    {...register("description", {
+                      required: "Description required",
+                    })}
+                    size="lg"
+                  />
+                  <Field.ErrorText>
+                    {errors.description?.message}
+                  </Field.ErrorText>
+                </Field.Root>
+                <Flex gap="3">
+                  <Field.Root invalid={!!errors.location}>
+                    <Field.Label fontWeight="bold">Location</Field.Label>
+                    <Controller
+                      control={control}
+                      name="location"
+                      render={({ field }) => (
+                        <Select.Root
+                          name={field.name}
+                          value={[field.value]}
+                          onValueChange={({ value }) =>
+                            field.onChange(value[0])
+                          }
+                          onInteractOutside={() => field.onBlur()}
+                          collection={indonesianCities}
+                          style={{ zIndex: 9999 }}
+                        >
+                          <Select.HiddenSelect />
+                          <Select.Control>
+                            <Select.Trigger>
+                              <Select.ValueText placeholder="Select location " />
+                            </Select.Trigger>
+                            <Select.IndicatorGroup>
+                              <Select.Indicator />
+                            </Select.IndicatorGroup>
+                          </Select.Control>
+                          <Portal>
+                            <Select.Positioner style={{ zIndex: 9999 }}>
+                              <Select.Content>
+                                {indonesianCities.items.map((item) => (
+                                  <Select.Item item={item} key={item.value}>
+                                    {item.label}
+                                    <Select.ItemIndicator />
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select.Positioner>
+                          </Portal>
+                        </Select.Root>
+                      )}
+                    />
+                    <Field.ErrorText>
+                      {errors.location?.message}
+                    </Field.ErrorText>
+                  </Field.Root>
+                  <Field.Root invalid={!!errors.company_type}>
+                    <Field.Label fontWeight="bold">Type</Field.Label>
+                    <Controller
+                      control={control}
+                      name="company_type"
+                      render={({ field }) => (
+                        <Select.Root
+                          name={field.name}
+                          value={[field.value]}
+                          onValueChange={({ value }) =>
+                            field.onChange(value[0])
+                          }
+                          onInteractOutside={() => field.onBlur()}
+                          collection={typeCompanyData}
+                          style={{ zIndex: 9999 }}
+                        >
+                          <Select.HiddenSelect />
+                          <Select.Control>
+                            <Select.Trigger>
+                              <Select.ValueText placeholder="Select type " />
+                            </Select.Trigger>
+                            <Select.IndicatorGroup>
+                              <Select.Indicator />
+                            </Select.IndicatorGroup>
+                          </Select.Control>
+                          <Portal>
+                            <Select.Positioner style={{ zIndex: 9999 }}>
+                              <Select.Content>
+                                {typeCompanyData.items.map((item) => (
+                                  <Select.Item item={item} key={item.value}>
+                                    {item.label}
+                                    <Select.ItemIndicator />
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select.Positioner>
+                          </Portal>
+                        </Select.Root>
+                      )}
+                    />
+                    <Field.ErrorText>
+                      {errors.company_type?.message}
+                    </Field.ErrorText>
+                  </Field.Root>
+                </Flex>
+                <Field.Root invalid={!!errors.size}>
+                  <Field.Label fontWeight="bold">Size</Field.Label>
+                  <Input
+                    {...register("size", {
+                      required: "Size required",
+                    })}
+                    size="lg"
+                    type="number"
+                  />
+                  <Field.ErrorText>{errors.size?.message}</Field.ErrorText>
+                </Field.Root>
+              </Stack>
+            </Flex>
+            <Flex justifyContent="end ">
+              <Button type="submit" mt="4" size="sm">
+                Save
+              </Button>
+            </Flex>
+          </form>
+        </Card.Body>
+      </Card.Root>
     </CompanyLayout>
   );
 };

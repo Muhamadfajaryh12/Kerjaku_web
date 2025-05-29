@@ -12,6 +12,7 @@ import {
   Stack,
   Text,
   Button,
+  Card,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -45,81 +46,89 @@ const ProfilePage = () => {
   };
   return (
     <MainLayout>
-      <Breadcrumb.Root my="5">
-        <Breadcrumb.List>
-          <Breadcrumb.Item>Profile</Breadcrumb.Item>
-          <Breadcrumb.Separator />
-          <Breadcrumb.Item>{data?.name}</Breadcrumb.Item>
-        </Breadcrumb.List>
-      </Breadcrumb.Root>
-      <Flex gap="6" justifyContent="center" mt="4">
-        <Image
-          src={`http://127.0.0.1:3000/${data?.photo}`}
-          width="200px"
-          height="200px"
-          rounded="sm"
-        />
-        <Stack gap="5">
-          <Stack>
-            <Flex justifyContent="space-between">
-              <Text fontSize="xl" fontWeight="bold">
-                {data?.name}
-              </Text>
-              <Button asChild size="xs">
-                <Link href={`/profile/form/${data?.id_user}`}>
-                  <FaPencil />
-                </Link>
-              </Button>
-            </Flex>
-            <Flex alignItems={"center"} gap="3">
-              <FaLocationDot />
-              <Text>{data?.address}</Text>
-            </Flex>
-            <Flex alignItems={"center"} gap="3">
-              <FaMessage />
-              <Text>{data?.email}</Text>
-            </Flex>
-            <Flex alignItems={"center"} gap="3">
-              <FaPhone />
-              <Text>{data?.phone}</Text>
-            </Flex>
-          </Stack>
-          <Stack gap="2">
-            <Text fontSize="xl" fontWeight="bold">
-              Summary
-            </Text>
-            <Box rounded="sm" borderWidth="1px" p="4">
-              <Text>{data?.summary}</Text>
-            </Box>
-          </Stack>
-          <Stack gap="2">
-            <Text fontSize="xl" fontWeight="bold">
-              Experience
-            </Text>
-            {data?.experience?.map((item, index) => (
-              <ExperienceCard
-                data={item}
-                onDelete={deleteExperience}
-                key={index}
-              />
-            ))}
-            <Button asChild variant="surface">
-              <Link href="/profile/experience/form"> Add Experience</Link>
-            </Button>
-          </Stack>
-          <Stack gap="2">
-            <Text fontSize="xl" fontWeight="bold">
-              Circulum Vitae
-            </Text>
-            <Box rounded="sm" borderWidth="1px" p="4">
-              <Flex alignItems={"center"} gap="2">
-                <BiSolidFilePdf color="red" size={20} />
-                <Text>{data?.cv}</Text>
-              </Flex>
-            </Box>
-          </Stack>
-        </Stack>
-      </Flex>
+      <Card.Root>
+        <Card.Header>
+          <Card.Title>
+            <Breadcrumb.Root fontWeight="bold">
+              <Breadcrumb.List>
+                <Breadcrumb.Item>Profile</Breadcrumb.Item>
+                <Breadcrumb.Separator />
+                <Breadcrumb.Item>{data?.name}</Breadcrumb.Item>
+              </Breadcrumb.List>
+            </Breadcrumb.Root>
+          </Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <Flex gap="6" justifyContent="center">
+            <Image
+              src={`http://127.0.0.1:3000/${data?.photo}`}
+              width="200px"
+              height="200px"
+              rounded="sm"
+            />
+            <Stack gap="5">
+              <Stack>
+                <Flex justifyContent="space-between">
+                  <Text fontSize="xl" fontWeight="bold">
+                    {data?.name}
+                  </Text>
+                  <Button asChild size="xs">
+                    <Link href={`/profile/form/${data?.id_user}`}>
+                      <FaPencil />
+                    </Link>
+                  </Button>
+                </Flex>
+                <Flex alignItems={"center"} gap="3">
+                  <FaLocationDot />
+                  <Text>{data?.address}</Text>
+                </Flex>
+                <Flex alignItems={"center"} gap="3">
+                  <FaMessage />
+                  <Text>{data?.email}</Text>
+                </Flex>
+                <Flex alignItems={"center"} gap="3">
+                  <FaPhone />
+                  <Text>{data?.phone}</Text>
+                </Flex>
+              </Stack>
+              <Stack gap="2">
+                <Text fontSize="xl" fontWeight="bold">
+                  Summary
+                </Text>
+                <Box rounded="sm" borderWidth="1px" p="4">
+                  <Text>{data?.summary}</Text>
+                </Box>
+              </Stack>
+              <Stack gap="2">
+                <Text fontSize="xl" fontWeight="bold">
+                  Experience
+                </Text>
+                {data?.experience?.map((item, index) => (
+                  <ExperienceCard
+                    data={item}
+                    onDelete={deleteExperience}
+                    key={index}
+                  />
+                ))}
+                <Button asChild variant="surface">
+                  <Link href="/profile/experience/form"> Add Experience</Link>
+                </Button>
+              </Stack>
+              <Stack gap="2">
+                <Text fontSize="xl" fontWeight="bold">
+                  Circulum Vitae
+                </Text>
+                <Box rounded="sm" borderWidth="1px" p="4">
+                  <Flex alignItems={"center"} gap="2">
+                    <BiSolidFilePdf color="red" size={20} />
+                    <Text>{data?.cv}</Text>
+                  </Flex>
+                </Box>
+              </Stack>
+            </Stack>
+          </Flex>
+        </Card.Body>
+      </Card.Root>
     </MainLayout>
   );
 };

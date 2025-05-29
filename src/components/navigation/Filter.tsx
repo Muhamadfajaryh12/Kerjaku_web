@@ -27,7 +27,6 @@ const Filter = () => {
     });
   };
 
-  // Handler untuk submit filter
   const handleFilterSubmit = () => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -43,7 +42,13 @@ const Filter = () => {
   };
 
   return (
-    <Box borderWidth="1px" rounded="md" p="4" minWidth="2xs">
+    <Box
+      borderWidth="1px"
+      rounded="md"
+      p="4"
+      minWidth="2xs"
+      backgroundColor="white"
+    >
       <Stack gap="2">
         <p>Category</p>
         <Stack gap="2">

@@ -9,10 +9,10 @@ import {
   Badge,
   Box,
   Button,
+  Card,
   CloseButton,
   Dialog,
   Field,
-  Flex,
   Portal,
   Select,
   Stack,
@@ -69,36 +69,43 @@ const ApplyAdminPage = () => {
   };
   return (
     <CompanyLayout title={data[0]?.vacancy?.name_vacancy}>
-      <Table.Root size="sm" variant="outline">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader>No</Table.ColumnHeader>
-            <Table.ColumnHeader>Name</Table.ColumnHeader>
-            <Table.ColumnHeader>Education</Table.ColumnHeader>
-            <Table.ColumnHeader>Date Apply</Table.ColumnHeader>
-            <Table.ColumnHeader>Status</Table.ColumnHeader>
-            <Table.ColumnHeader>Action</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {data?.map((item, index) => (
-            <Table.Row key={index}>
-              <Table.Cell>{++index}</Table.Cell>
-              <Table.Cell>{item?.profile?.name}</Table.Cell>
-              <Table.Cell>{item?.profile?.education}</Table.Cell>
-              <Table.Cell>{useDate(item?.date)}</Table.Cell>
-              <Table.Cell>
-                <Badge>{item?.status}</Badge>
-              </Table.Cell>
-              <Table.Cell>
-                <Button size="xs" onClick={() => handleDetail(item?.id)}>
-                  <BiDetail />
-                </Button>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
+      <Card.Root>
+        <Card.Header>
+          <Card.Title>List Applicant</Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <Table.Root size="sm" variant="outline">
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeader>No</Table.ColumnHeader>
+                <Table.ColumnHeader>Name</Table.ColumnHeader>
+                <Table.ColumnHeader>Education</Table.ColumnHeader>
+                <Table.ColumnHeader>Date Apply</Table.ColumnHeader>
+                <Table.ColumnHeader>Status</Table.ColumnHeader>
+                <Table.ColumnHeader>Action</Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {data?.map((item, index) => (
+                <Table.Row key={index}>
+                  <Table.Cell>{++index}</Table.Cell>
+                  <Table.Cell>{item?.profile?.name}</Table.Cell>
+                  <Table.Cell>{item?.profile?.education}</Table.Cell>
+                  <Table.Cell>{useDate(item?.date)}</Table.Cell>
+                  <Table.Cell>
+                    <Badge>{item?.status}</Badge>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Button size="xs" onClick={() => handleDetail(item?.id)}>
+                      <BiDetail />
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Card.Body>
+      </Card.Root>
       <Dialog.Root
         size="lg"
         lazyMount

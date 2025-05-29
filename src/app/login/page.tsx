@@ -52,7 +52,7 @@ const LoginPage = () => {
             <Alert.Title>{message}</Alert.Title>
           </Alert.Root>
         )}
-        <Card.Root size="lg">
+        <Card.Root w="96">
           <Card.Header>
             <Heading fontWeight="bold" className="text-center">
               LOGIN
@@ -68,6 +68,7 @@ const LoginPage = () => {
                       required: "Username is required",
                     })}
                     size="lg"
+                    variant="subtle"
                   />
                   <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
                 </Field.Root>
@@ -78,18 +79,25 @@ const LoginPage = () => {
                       required: "Password is required",
                     })}
                     size="lg"
+                    variant="subtle"
                   />
                   <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
                 </Field.Root>
-                <Button type="submit" mx="auto" width="full">
-                  Submit
+                <Button
+                  type="submit"
+                  mx="auto"
+                  width="full"
+                  variant="outline"
+                  colorPalette="blue"
+                >
+                  LOGIN
                 </Button>
-                <Text mx="auto">
-                  Belum memiliki akun?
+                <Text mx="auto" fontSize="sm">
+                  You not have account?
                   <Link
                     href="/register"
                     colorPalette="teal"
-                    mx="1"
+                    mx="2"
                     fontWeight="bold"
                   >
                     Register

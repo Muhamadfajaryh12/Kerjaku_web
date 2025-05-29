@@ -26,11 +26,15 @@ const LayoutUnAuthentication = ({ children }: LayoutProps) => {
     router.push(`?${params.toString()}`);
   };
   return (
-    <main>
+    <main className="bg-gray-100">
       <Navbar />
-      <Container mx="auto" my="20px">
+      <Container mx="auto" my="20px" p="2" minHeight="screen">
         <div className="w-full">
-          <InputGroup startElement={<BiSearch />} my="4">
+          <InputGroup
+            startElement={<BiSearch />}
+            my="4"
+            backgroundColor="white"
+          >
             <Input
               placeholder="Search"
               size="md"

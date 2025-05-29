@@ -5,12 +5,10 @@ import React from "react";
 
 const MainLayout = ({ children }: LayoutProps) => {
   return (
-    <div>
+    <div className="bg-gray-100">
       <Navbar />
-      <Container mx="auto" my="20px">
-        {/* <Box borderWidth="1px" borderRadius="md"> */}
+      <Container mx="auto" my="20px" p="5">
         {children}
-        {/* </Box> */}
       </Container>
     </div>
   );

@@ -13,6 +13,7 @@ const Navbar = () => {
   const id_profile = useLocalStorate("id_profile");
   const router = useRouter();
 
+  const resultPath = path.split("/").filter((segment) => segment !== "");
   const Logout = () => {
     Cookies.remove("token");
     localStorage.removeItem("id");
@@ -22,15 +23,30 @@ const Navbar = () => {
   };
 
   return (
-    <Flex borderWidth="1px" justifyContent="space-around" alignItems="center">
+    <Flex
+      borderWidth="1px"
+      justifyContent="space-between"
+      alignItems="center"
+      backgroundColor="white"
+    >
       <Flex gap="4" alignItems="center">
-        <Text fontWeight="bold" fontSize="2xl" mx="2">
+        <Text fontWeight="bold" fontSize="3xl" mx="2">
           KerjaKu
         </Text>
-        <Link href="/" className="border-4 border-blue-700">
-          Vacancy
+        <Link href="/">
+          <Text
+            fontWeight={`${resultPath.length == 0 || resultPath[0] == "vacancy" ? "semibold" : "light"}`}
+          >
+            Vacancy
+          </Text>
         </Link>
-        <Link href="/company">Company</Link>
+        <Link href="/company">
+          <Text
+            fontWeight={`${resultPath[0] == "company" ? "semibold" : "light"}`}
+          >
+            Company
+          </Text>
+        </Link>
       </Flex>
       {auth ? (
         <Flex alignItems="center" gap="4" p="2">
@@ -45,7 +61,7 @@ const Navbar = () => {
                     <Link href={`/profile/${id}`}>Profile</Link>
                   </Menu.Item>
                   <Menu.Item value="new-txt-b">
-                    <Link href={`/apply/${id_profile}`}>Lamaran Pekerjaan</Link>
+                    <Link href={`/apply/${id_profile}`}>Job Applied</Link>
                   </Menu.Item>
                   <Menu.Item value="new-txt-c">
                     {/* <Link href="">Logout</Link> */}
@@ -56,7 +72,7 @@ const Navbar = () => {
             </Portal>
           </Menu.Root>
           <Button asChild variant="outline" colorPalette="blue">
-            <Link href={`/admin`}>
+            <Link href={`/admin/dashboard`}>
               <Text fontWeight="bold">To Company</Text>
             </Link>
           </Button>

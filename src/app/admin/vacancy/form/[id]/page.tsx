@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
+  Card,
   Field,
   Flex,
   Input,
@@ -29,9 +30,9 @@ import { useFetch } from "@/hooks/useFetch";
 const FormAdminVacancy = () => {
   const IdCompany = useLocalStorate("id_company");
   const params = useParams();
-  const { data } = useFetch(
-    `${process.env.NEXT_PUBLIC_API}/vacancy/${params.id}`
-  );
+  const {
+    data: { data },
+  } = useFetch(`${process.env.NEXT_PUBLIC_API}/vacancy/${params.id}`);
 
   const {
     register,
@@ -88,337 +89,348 @@ const FormAdminVacancy = () => {
   };
   return (
     <CompanyLayout title="Vacancy">
-      <div>
-        <form onSubmit={handleSubmit(submitVacancy)}>
-          <Stack gap="5">
-            <Field.Root invalid={!!errors.name_vacancy}>
-              <Field.Label>Name Vacancy</Field.Label>
-              <Input
-                {...register("name_vacancy", {
-                  required: "name vacancy is required",
-                })}
-                size="md"
-              />
-              <Field.ErrorText>{errors.name_vacancy?.message}</Field.ErrorText>
-            </Field.Root>
-            <Flex gap="3">
-              <Field.Root invalid={!!errors.location}>
-                <Field.Label>Location</Field.Label>
+      <Card.Root>
+        <Card.Header>
+          <Card.Title>Form Update Vacancy</Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <form onSubmit={handleSubmit(submitVacancy)}>
+            <Stack gap="5">
+              <Field.Root invalid={!!errors.name_vacancy}>
+                <Field.Label>Name Vacancy</Field.Label>
                 <Input
-                  {...register("location", {
-                    required: "location is required",
+                  {...register("name_vacancy", {
+                    required: "name vacancy is required",
                   })}
                   size="md"
-                />
-                <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
-              </Field.Root>
-              <Field.Root invalid={!!errors.salary}>
-                <Field.Label>Salary</Field.Label>
-                <Input
-                  {...register("salary", {
-                    required: "salary is required",
-                  })}
-                  size="md"
-                  type="number"
-                />
-                <Field.ErrorText>{errors.salary?.message}</Field.ErrorText>
-              </Field.Root>
-              <Field.Root invalid={!!errors.qty}>
-                <Field.Label>Qty</Field.Label>
-                <Input
-                  {...register("qty", {
-                    required: "qty is required",
-                  })}
-                  size="md"
-                  type="number"
-                />
-                <Field.ErrorText>{errors.qty?.message}</Field.ErrorText>
-              </Field.Root>
-            </Flex>
-            <Flex gap="3">
-              <Field.Root invalid={!!errors.type}>
-                <Field.Label>Type</Field.Label>
-                <Controller
-                  control={control}
-                  name="type"
-                  render={({ field }) => (
-                    <Select.Root
-                      name={field.name}
-                      value={[field.value]}
-                      onValueChange={({ value }) => field.onChange(value[0])}
-                      onInteractOutside={() => field.onBlur()}
-                      collection={typeData}
-                    >
-                      <Select.HiddenSelect />
-                      <Select.Control>
-                        <Select.Trigger>
-                          <Select.ValueText placeholder="Select type" />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                          <Select.Indicator />
-                        </Select.IndicatorGroup>
-                      </Select.Control>
-                      <Portal>
-                        <Select.Positioner>
-                          <Select.Content>
-                            {typeData.items.map((item) => (
-                              <Select.Item
-                                item={item}
-                                key={item.value}
-                                selected={item.value === field.value}
-                              >
-                                {item.label}
-                                <Select.ItemIndicator />
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select.Positioner>
-                      </Portal>
-                    </Select.Root>
-                  )}
-                />
-                <Field.ErrorText>{errors.type?.message}</Field.ErrorText>
-              </Field.Root>
-              <Field.Root invalid={!!errors.category}>
-                <Field.Label>Category</Field.Label>
-                <Controller
-                  control={control}
-                  name="category"
-                  render={({ field }) => (
-                    <Select.Root
-                      name={field.name}
-                      value={[field.value]}
-                      onValueChange={({ value }) => field.onChange(value[0])}
-                      onInteractOutside={() => field.onBlur()}
-                      collection={categoryJobData}
-                    >
-                      <Select.HiddenSelect />
-                      <Select.Control>
-                        <Select.Trigger>
-                          <Select.ValueText placeholder="Select Category" />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                          <Select.Indicator />
-                        </Select.IndicatorGroup>
-                      </Select.Control>
-                      <Portal>
-                        <Select.Positioner>
-                          <Select.Content>
-                            {categoryJobData.items.map((item) => (
-                              <Select.Item item={item} key={item.value}>
-                                {item.label}
-                                <Select.ItemIndicator />
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select.Positioner>
-                      </Portal>
-                    </Select.Root>
-                  )}
-                />
-                <Field.ErrorText>{errors.category?.message}</Field.ErrorText>
-              </Field.Root>
-              <Field.Root invalid={!!errors.site}>
-                <Field.Label>Site</Field.Label>
-                <Controller
-                  control={control}
-                  name="site"
-                  defaultValue={data?.at_where}
-                  render={({ field }) => (
-                    <Select.Root
-                      name={field.name}
-                      value={[field.value]}
-                      onValueChange={({ value }) => field.onChange(value[0])}
-                      onInteractOutside={() => field.onBlur()}
-                      collection={siteData}
-                    >
-                      <Select.HiddenSelect />
-                      <Select.Control>
-                        <Select.Trigger>
-                          <Select.ValueText placeholder="Select site" />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                          <Select.Indicator />
-                        </Select.IndicatorGroup>
-                      </Select.Control>
-                      <Portal>
-                        <Select.Positioner>
-                          <Select.Content>
-                            {siteData.items.map((item) => (
-                              <Select.Item item={item} key={item.value}>
-                                {item.label}
-                                <Select.ItemIndicator />
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select.Positioner>
-                      </Portal>
-                    </Select.Root>
-                  )}
-                />
-                <Field.ErrorText>{errors.site?.message}</Field.ErrorText>
-              </Field.Root>
-            </Flex>
-            <Flex gap="3">
-              <Field.Root invalid={!!errors.education}>
-                <Field.Label>Education</Field.Label>
-                <Controller
-                  control={control}
-                  name="education"
-                  render={({ field }) => (
-                    <Select.Root
-                      name={field.name}
-                      value={[field.value]}
-                      onValueChange={({ value }) => field.onChange(value[0])}
-                      onInteractOutside={() => field.onBlur()}
-                      collection={educationData}
-                    >
-                      <Select.HiddenSelect />
-                      <Select.Control>
-                        <Select.Trigger>
-                          <Select.ValueText placeholder="Select type" />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                          <Select.Indicator />
-                        </Select.IndicatorGroup>
-                      </Select.Control>
-                      <Portal>
-                        <Select.Positioner>
-                          <Select.Content>
-                            {educationData.items.map((item) => (
-                              <Select.Item item={item} key={item.value}>
-                                {item.label}
-                                <Select.ItemIndicator />
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select.Positioner>
-                      </Portal>
-                    </Select.Root>
-                  )}
-                />
-                <Field.ErrorText>{errors.education?.message}</Field.ErrorText>
-              </Field.Root>
-              <Field.Root invalid={!!errors.experience_time}>
-                <Field.Label>Experience</Field.Label>
-                <Controller
-                  control={control}
-                  name="experience_time"
-                  render={({ field }) => (
-                    <Select.Root
-                      name={field.name}
-                      value={[field.value]}
-                      onValueChange={({ value }) => field.onChange(value[0])}
-                      onInteractOutside={() => field.onBlur()}
-                      collection={experienceTimeData}
-                    >
-                      <Select.HiddenSelect />
-                      <Select.Control>
-                        <Select.Trigger>
-                          <Select.ValueText placeholder="Select experience" />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                          <Select.Indicator />
-                        </Select.IndicatorGroup>
-                      </Select.Control>
-                      <Portal>
-                        <Select.Positioner>
-                          <Select.Content>
-                            {experienceTimeData.items.map((item) => (
-                              <Select.Item item={item} key={item.value}>
-                                {item.label}
-                                <Select.ItemIndicator />
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select.Positioner>
-                      </Portal>
-                    </Select.Root>
-                  )}
                 />
                 <Field.ErrorText>
-                  {errors.experience_time?.message}
+                  {errors.name_vacancy?.message}
                 </Field.ErrorText>
               </Field.Root>
-            </Flex>
-            <Field.Root invalid={!!errors.description}>
-              <Field.Label>Description</Field.Label>
-              <Textarea
-                {...register("description", {
-                  required: "Description required",
-                })}
-                size="lg"
-              />
-              <Field.ErrorText>{errors.description?.message}</Field.ErrorText>
-            </Field.Root>
-            <Flex gap="4">
-              <Field.Root invalid={!!errors.date_start}>
-                <Field.Label>Date open</Field.Label>
-                <Input
-                  {...register("date_start", {
-                    required: "date_start is required",
+              <Flex gap="3">
+                <Field.Root invalid={!!errors.location}>
+                  <Field.Label>Location</Field.Label>
+                  <Input
+                    {...register("location", {
+                      required: "location is required",
+                    })}
+                    size="md"
+                  />
+                  <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
+                </Field.Root>
+                <Field.Root invalid={!!errors.salary}>
+                  <Field.Label>Salary</Field.Label>
+                  <Input
+                    {...register("salary", {
+                      required: "salary is required",
+                    })}
+                    size="md"
+                    type="number"
+                  />
+                  <Field.ErrorText>{errors.salary?.message}</Field.ErrorText>
+                </Field.Root>
+                <Field.Root invalid={!!errors.qty}>
+                  <Field.Label>Qty</Field.Label>
+                  <Input
+                    {...register("qty", {
+                      required: "qty is required",
+                    })}
+                    size="md"
+                    type="number"
+                  />
+                  <Field.ErrorText>{errors.qty?.message}</Field.ErrorText>
+                </Field.Root>
+              </Flex>
+              <Flex gap="3">
+                <Field.Root invalid={!!errors.type}>
+                  <Field.Label>Type</Field.Label>
+                  <Controller
+                    control={control}
+                    name="type"
+                    render={({ field }) => (
+                      <Select.Root
+                        name={field.name}
+                        value={[field.value]}
+                        onValueChange={({ value }) => field.onChange(value[0])}
+                        onInteractOutside={() => field.onBlur()}
+                        collection={typeData}
+                      >
+                        <Select.HiddenSelect />
+                        <Select.Control>
+                          <Select.Trigger>
+                            <Select.ValueText placeholder="Select type" />
+                          </Select.Trigger>
+                          <Select.IndicatorGroup>
+                            <Select.Indicator />
+                          </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Portal>
+                          <Select.Positioner>
+                            <Select.Content>
+                              {typeData.items.map((item) => (
+                                <Select.Item
+                                  item={item}
+                                  key={item.value}
+                                  selected={item.value === field.value}
+                                >
+                                  {item.label}
+                                  <Select.ItemIndicator />
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select.Positioner>
+                        </Portal>
+                      </Select.Root>
+                    )}
+                  />
+                  <Field.ErrorText>{errors.type?.message}</Field.ErrorText>
+                </Field.Root>
+                <Field.Root invalid={!!errors.category}>
+                  <Field.Label>Category</Field.Label>
+                  <Controller
+                    control={control}
+                    name="category"
+                    render={({ field }) => (
+                      <Select.Root
+                        name={field.name}
+                        value={[field.value]}
+                        onValueChange={({ value }) => field.onChange(value[0])}
+                        onInteractOutside={() => field.onBlur()}
+                        collection={categoryJobData}
+                      >
+                        <Select.HiddenSelect />
+                        <Select.Control>
+                          <Select.Trigger>
+                            <Select.ValueText placeholder="Select Category" />
+                          </Select.Trigger>
+                          <Select.IndicatorGroup>
+                            <Select.Indicator />
+                          </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Portal>
+                          <Select.Positioner>
+                            <Select.Content>
+                              {categoryJobData.items.map((item) => (
+                                <Select.Item item={item} key={item.value}>
+                                  {item.label}
+                                  <Select.ItemIndicator />
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select.Positioner>
+                        </Portal>
+                      </Select.Root>
+                    )}
+                  />
+                  <Field.ErrorText>{errors.category?.message}</Field.ErrorText>
+                </Field.Root>
+                <Field.Root invalid={!!errors.site}>
+                  <Field.Label>Site</Field.Label>
+                  <Controller
+                    control={control}
+                    name="site"
+                    defaultValue={data?.at_where}
+                    render={({ field }) => (
+                      <Select.Root
+                        name={field.name}
+                        value={[field.value]}
+                        onValueChange={({ value }) => field.onChange(value[0])}
+                        onInteractOutside={() => field.onBlur()}
+                        collection={siteData}
+                      >
+                        <Select.HiddenSelect />
+                        <Select.Control>
+                          <Select.Trigger>
+                            <Select.ValueText placeholder="Select site" />
+                          </Select.Trigger>
+                          <Select.IndicatorGroup>
+                            <Select.Indicator />
+                          </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Portal>
+                          <Select.Positioner>
+                            <Select.Content>
+                              {siteData.items.map((item) => (
+                                <Select.Item item={item} key={item.value}>
+                                  {item.label}
+                                  <Select.ItemIndicator />
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select.Positioner>
+                        </Portal>
+                      </Select.Root>
+                    )}
+                  />
+                  <Field.ErrorText>{errors.site?.message}</Field.ErrorText>
+                </Field.Root>
+              </Flex>
+              <Flex gap="3">
+                <Field.Root invalid={!!errors.education}>
+                  <Field.Label>Education</Field.Label>
+                  <Controller
+                    control={control}
+                    name="education"
+                    render={({ field }) => (
+                      <Select.Root
+                        name={field.name}
+                        value={[field.value]}
+                        onValueChange={({ value }) => field.onChange(value[0])}
+                        onInteractOutside={() => field.onBlur()}
+                        collection={educationData}
+                      >
+                        <Select.HiddenSelect />
+                        <Select.Control>
+                          <Select.Trigger>
+                            <Select.ValueText placeholder="Select type" />
+                          </Select.Trigger>
+                          <Select.IndicatorGroup>
+                            <Select.Indicator />
+                          </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Portal>
+                          <Select.Positioner>
+                            <Select.Content>
+                              {educationData.items.map((item) => (
+                                <Select.Item item={item} key={item.value}>
+                                  {item.label}
+                                  <Select.ItemIndicator />
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select.Positioner>
+                        </Portal>
+                      </Select.Root>
+                    )}
+                  />
+                  <Field.ErrorText>{errors.education?.message}</Field.ErrorText>
+                </Field.Root>
+                <Field.Root invalid={!!errors.experience_time}>
+                  <Field.Label>Experience</Field.Label>
+                  <Controller
+                    control={control}
+                    name="experience_time"
+                    render={({ field }) => (
+                      <Select.Root
+                        name={field.name}
+                        value={[field.value]}
+                        onValueChange={({ value }) => field.onChange(value[0])}
+                        onInteractOutside={() => field.onBlur()}
+                        collection={experienceTimeData}
+                      >
+                        <Select.HiddenSelect />
+                        <Select.Control>
+                          <Select.Trigger>
+                            <Select.ValueText placeholder="Select experience" />
+                          </Select.Trigger>
+                          <Select.IndicatorGroup>
+                            <Select.Indicator />
+                          </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Portal>
+                          <Select.Positioner>
+                            <Select.Content>
+                              {experienceTimeData.items.map((item) => (
+                                <Select.Item item={item} key={item.value}>
+                                  {item.label}
+                                  <Select.ItemIndicator />
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select.Positioner>
+                        </Portal>
+                      </Select.Root>
+                    )}
+                  />
+                  <Field.ErrorText>
+                    {errors.experience_time?.message}
+                  </Field.ErrorText>
+                </Field.Root>
+              </Flex>
+              <Field.Root invalid={!!errors.description}>
+                <Field.Label>Description</Field.Label>
+                <Textarea
+                  {...register("description", {
+                    required: "Description required",
                   })}
-                  size="md"
-                  type="date"
-                  disabled
+                  size="lg"
                 />
-                <Field.ErrorText>{errors.date_end?.message}</Field.ErrorText>
-              </Field.Root>{" "}
-              <Field.Root invalid={!!errors.date_end}>
-                <Field.Label>Date close</Field.Label>
-                <Input
-                  {...register("date_end", {
-                    required: "date_end is required",
-                  })}
-                  size="md"
-                  type="date"
-                />
-                <Field.ErrorText>{errors.date_end?.message}</Field.ErrorText>
+                <Field.ErrorText>{errors.description?.message}</Field.ErrorText>
               </Field.Root>
-              <Field.Root invalid={!!errors.status}>
-                <Field.Label>Status</Field.Label>
-                <Controller
-                  control={control}
-                  name="status"
-                  render={({ field }) => (
-                    <Select.Root
-                      name={field.name}
-                      value={[field.value]}
-                      onValueChange={({ value }) => field.onChange(value[0])}
-                      onInteractOutside={() => field.onBlur()}
-                      collection={statusData}
-                    >
-                      <Select.HiddenSelect />
-                      <Select.Control>
-                        <Select.Trigger>
-                          <Select.ValueText placeholder="Select experience" />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                          <Select.Indicator />
-                        </Select.IndicatorGroup>
-                      </Select.Control>
-                      <Portal>
-                        <Select.Positioner>
-                          <Select.Content>
-                            {statusData.items.map((item) => (
-                              <Select.Item item={item} key={item.value}>
-                                {item.label}
-                                <Select.ItemIndicator />
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select.Positioner>
-                      </Portal>
-                    </Select.Root>
-                  )}
-                />
-                <Field.ErrorText>{errors.status?.message}</Field.ErrorText>
-              </Field.Root>
-            </Flex>
-            <Button type="submit">Submit</Button>
-          </Stack>
-        </form>
-      </div>
+              <Flex gap="4">
+                <Field.Root invalid={!!errors.date_start}>
+                  <Field.Label>Date open</Field.Label>
+                  <Input
+                    {...register("date_start", {
+                      required: "date_start is required",
+                    })}
+                    size="md"
+                    type="date"
+                    disabled
+                  />
+                  <Field.ErrorText>{errors.date_end?.message}</Field.ErrorText>
+                </Field.Root>{" "}
+                <Field.Root invalid={!!errors.date_end}>
+                  <Field.Label>Date close</Field.Label>
+                  <Input
+                    {...register("date_end", {
+                      required: "date_end is required",
+                    })}
+                    size="md"
+                    type="date"
+                  />
+                  <Field.ErrorText>{errors.date_end?.message}</Field.ErrorText>
+                </Field.Root>
+                <Field.Root invalid={!!errors.status}>
+                  <Field.Label>Status</Field.Label>
+                  <Controller
+                    control={control}
+                    name="status"
+                    render={({ field }) => (
+                      <Select.Root
+                        name={field.name}
+                        value={[field.value]}
+                        onValueChange={({ value }) => field.onChange(value[0])}
+                        onInteractOutside={() => field.onBlur()}
+                        collection={statusData}
+                      >
+                        <Select.HiddenSelect />
+                        <Select.Control>
+                          <Select.Trigger>
+                            <Select.ValueText placeholder="Select experience" />
+                          </Select.Trigger>
+                          <Select.IndicatorGroup>
+                            <Select.Indicator />
+                          </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Portal>
+                          <Select.Positioner>
+                            <Select.Content>
+                              {statusData.items.map((item) => (
+                                <Select.Item item={item} key={item.value}>
+                                  {item.label}
+                                  <Select.ItemIndicator />
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select.Positioner>
+                        </Portal>
+                      </Select.Root>
+                    )}
+                  />
+                  <Field.ErrorText>{errors.status?.message}</Field.ErrorText>
+                </Field.Root>
+              </Flex>
+              <Flex justifyContent="end">
+                <Button type="submit" size="sm">
+                  SAVE
+                </Button>
+              </Flex>
+            </Stack>
+          </form>
+        </Card.Body>
+      </Card.Root>
     </CompanyLayout>
   );
 };

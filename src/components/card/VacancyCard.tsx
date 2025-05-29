@@ -9,7 +9,7 @@ import { FaLocationDot } from "react-icons/fa6";
 
 const VacancyCard = ({ data }: VacancyProps) => {
   return (
-    <Link href={`/vacancy/${data?.id}`} className="w-full">
+    <Link href={`/vacancy/${data?.id}`} className="w-full bg-white">
       <Box id="card-vacancy" borderWidth="1px" rounded="md" p="2" w="full">
         <Stack gap="2">
           <div className="w-full">

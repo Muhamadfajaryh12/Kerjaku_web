@@ -4,7 +4,16 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { useDate } from "@/hooks/useDate";
 import { useFetch } from "@/hooks/useFetch";
 import MainLayout from "@/layouts/MainLayout";
-import { Badge, Box, Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Image,
+  Stack,
+  Text,
+  Card,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -18,9 +27,9 @@ const DetailVacancyPage = () => {
   );
   return (
     <MainLayout>
-      <Flex justifyContent="space-between" gap="5">
-        <div className="w-full">
-          <Flex gap="5" borderBottomWidth="2px" paddingBottom="4">
+      <Flex justifyContent="space-between" gap="5" my="3">
+        <Card.Root w="full" p="2">
+          <Flex gap="5" borderBottomWidth="2px" p="5">
             <Image
               rounded="sm"
               src={`http://127.0.0.1:3000/${data?.data?.company?.photo}`}
@@ -34,31 +43,36 @@ const DetailVacancyPage = () => {
               <Text fontWeight="semibold" color="blue">
                 {data?.data?.company?.company_name}
               </Text>
-              <p className="flex items-center gap-2 text-sm">
+              <Flex alignItems="center" gap="2">
                 <BiBuilding />
-                <span>{data?.data?.category}</span>
-              </p>
-              <p className="flex items-center gap-2 text-sm">
+                <Text>{data?.data?.category}</Text>
+              </Flex>
+
+              <Flex alignItems="center" gap="2">
                 <FaClock />
-                <span>{data?.data?.type}</span>
-              </p>
-              <p className="flex items-center gap-2 text-sm">
+                <Text>{data?.data?.type}</Text>
+              </Flex>
+
+              <Flex alignItems="center" gap="2">
                 <FaLocationDot />
-                <span>{data?.data?.location}</span>
-              </p>
-              <p className="flex items-center gap-2 text-sm">
+                <Text>{data?.data?.location}</Text>
+              </Flex>
+
+              <Flex alignItems="center" gap="2">
                 <BiDollar />
-                <span>{useCurrency(data?.data?.salary)}</span>
-              </p>
-              <p className="flex items-center gap-2 text-xs">
-                Close <span>{useDate(data?.data?.date_end)}</span>
-              </p>
-              <Button asChild colorPalette="blue">
+                <Text>{useCurrency(data?.data?.salary)}</Text>
+              </Flex>
+
+              <Flex alignItems="center" gap="2" fontSize="xs" color="gray">
+                <Text>Posted {useDate(data?.data?.date_start)}</Text>|
+                <Text> Close {useDate(data?.data?.date_end)}</Text>
+              </Flex>
+              <Button asChild colorPalette="blue" size="sm" variant="surface">
                 <Link href={`/vacancy/form/${data?.data?.id}`}>Apply Now</Link>
               </Button>
             </Stack>
           </Flex>
-          <Box my="5">
+          <Box my="5" mx="5">
             <Stack gap="2">
               <Text fontWeight="bold">Minimum Requirement</Text>
               <Flex gap="2">
@@ -73,7 +87,7 @@ const DetailVacancyPage = () => {
               <Text textAlign="justify">{data?.data?.description}</Text>
             </Stack>
           </Box>
-        </div>
+        </Card.Root>
         <div>
           <Text fontWeight="bold" mb="3">
             Other vacancies
