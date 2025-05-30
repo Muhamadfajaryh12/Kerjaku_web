@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocalStorate } from "@/hooks/useLocalStorage";
 import Link from "next/link";
+import { useFetch } from "@/hooks/useFetch";
 
 const Navbar = () => {
   const path = usePathname();
@@ -13,6 +14,9 @@ const Navbar = () => {
   const id_profile = useLocalStorate("id_profile");
   const router = useRouter();
 
+  const { data } = useFetch(
+    `${process.env.NEXT_PUBLIC_API}/profile/${id_profile}`
+  );
   const resultPath = path.split("/").filter((segment) => segment !== "");
   const Logout = () => {
     Cookies.remove("token");
@@ -52,7 +56,7 @@ const Navbar = () => {
         <Flex alignItems="center" gap="4" p="2">
           <Menu.Root>
             <Menu.Trigger asChild>
-              <Text>Action</Text>
+              <Text>{data?.name}</Text>
             </Menu.Trigger>
             <Portal>
               <Menu.Positioner>
