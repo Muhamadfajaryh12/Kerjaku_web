@@ -1,14 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button, Checkbox, Stack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Stack, Text } from "@chakra-ui/react";
 import { useFetch } from "@/hooks/useFetch";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Filter = () => {
+const Filter = ({ data }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data } = useFetch(`${process.env.NEXT_PUBLIC_API}/category`);
-
+  const filterKey = Object.keys(data || []);
   const [filters, setFilters] = useState({
     category: [] as string[],
     type: [] as string[],
@@ -50,45 +49,26 @@ const Filter = () => {
       backgroundColor="white"
     >
       <Stack gap="2">
-        <p>Category</p>
-        <Stack gap="2">
-          {data?.category?.map((item, index) => (
-            <Checkbox.Root
-              key={index}
-              onCheckedChange={() => handleCheckboxChange("category", item)}
-            >
-              <Checkbox.HiddenInput />
-              <Checkbox.Control />
-              <Checkbox.Label>{item}</Checkbox.Label>
-            </Checkbox.Root>
-          ))}
-        </Stack>
-        <p>Type</p>
-        <Stack gap="2">
-          {data?.type?.map((item, index) => (
-            <Checkbox.Root
-              key={index}
-              onCheckedChange={() => handleCheckboxChange("type", item)}
-            >
-              <Checkbox.HiddenInput />
-              <Checkbox.Control />
-              <Checkbox.Label>{item}</Checkbox.Label>
-            </Checkbox.Root>
-          ))}
-        </Stack>
-        <p>Location</p>
-        <Stack gap="2">
-          {data?.location?.map((item, index) => (
-            <Checkbox.Root
-              key={index}
-              onCheckedChange={() => handleCheckboxChange("location", item)}
-            >
-              <Checkbox.HiddenInput />
-              <Checkbox.Control />
-              <Checkbox.Label>{item}</Checkbox.Label>
-            </Checkbox.Root>
-          ))}
-        </Stack>
+        {filterKey.map((item) => (
+          <div key={item}>
+            <Text fontWeight="bold">
+              {item.charAt(0).toUpperCase() + item.slice(1)}
+            </Text>
+            <Stack gap="2">
+              {data[item].map((items, index) => (
+                <Checkbox.Root
+                  key={index}
+                  onCheckedChange={() => handleCheckboxChange(item, items)}
+                >
+                  <Checkbox.HiddenInput />
+                  <Checkbox.Control />
+                  <Checkbox.Label>{items}</Checkbox.Label>
+                </Checkbox.Root>
+              ))}
+            </Stack>
+          </div>
+        ))}
+
         <Button width="full" size="sm" onClick={handleFilterSubmit}>
           FILTER
         </Button>

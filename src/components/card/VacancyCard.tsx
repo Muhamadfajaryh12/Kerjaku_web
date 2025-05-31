@@ -4,8 +4,6 @@ import { VacancyProps } from "@/types/Vacancy";
 import { Badge, Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
-import { BiBuilding, BiDollar } from "react-icons/bi";
-import { FaLocationDot } from "react-icons/fa6";
 
 const VacancyCard = ({ data }: VacancyProps) => {
   return (

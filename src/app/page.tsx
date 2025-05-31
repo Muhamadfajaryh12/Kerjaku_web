@@ -21,14 +21,17 @@ const DashboardPage = () => {
       `&type=${params.get("type") || ""}` +
       `&location=${params.get("location") || ""}`
   );
-  console.log(data);
+  const { data: dataCategory } = useFetch(
+    `${process.env.NEXT_PUBLIC_API}/category`
+  );
+
   const totalPages = Math.ceil((data?.length || 0) / itemsPage);
   const currentItems =
     data?.slice((currentPage - 1) * itemsPage, currentPage * itemsPage) || [];
   return (
     <LayoutUnAuthentication>
       <div className="flex gap-4">
-        <Filter />
+        <Filter data={dataCategory} />
         <div className="w-full">
           <div className="grid grid-cols-3 gap-4 w-full">
             {currentItems?.map((item, index) => (

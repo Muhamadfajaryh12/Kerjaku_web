@@ -3,9 +3,18 @@ import VacancyCard from "@/components/card/VacancyCard";
 import { useFetch } from "@/hooks/useFetch";
 import { useLocalStorate } from "@/hooks/useLocalStorage";
 import DetailLayout from "@/layouts/DetailLayout";
-import { Box, Container, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  Container,
+  Flex,
+  Image,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import React from "react";
+import { BiBuilding } from "react-icons/bi";
 import { FaLocationDot, FaPeopleGroup } from "react-icons/fa6";
 
 const CompanyDetailPage = () => {
@@ -16,7 +25,7 @@ const CompanyDetailPage = () => {
 
   return (
     <DetailLayout>
-      <Container borderBottomWidth="1px" w="full">
+      <Card.Root w="full" p="4">
         <Flex w="full" p="3" gap="4">
           <Image
             rounded="md"
@@ -31,21 +40,21 @@ const CompanyDetailPage = () => {
             <Text fontSize="xl">{data?.description}</Text>
             <Flex gap="5">
               <Flex gap="3" alignItems="center">
-                <FaLocationDot />
+                <BiBuilding />
                 <Text>{data?.company_type}</Text>
               </Flex>
               <Flex gap="3" alignItems="center">
                 <FaLocationDot />
                 <Text>{data?.location}</Text>
               </Flex>
-              <Flex gap="3" alignItems="center">
-                <FaPeopleGroup />
-                <Text>{data?.size} Employee</Text>
-              </Flex>
+            </Flex>
+            <Flex gap="3" alignItems="center">
+              <FaPeopleGroup />
+              <Text>{data?.size} Employee</Text>
             </Flex>
           </Stack>
         </Flex>
-      </Container>
+      </Card.Root>
       <Container mt="10">
         <Text fontWeight="bold" my="5" fontSize="xl">
           Vacancy

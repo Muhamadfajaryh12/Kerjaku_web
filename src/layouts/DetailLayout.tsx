@@ -4,7 +4,7 @@ import React from "react";
 
 const DetailLayout = ({ children }: LayoutProps) => {
   return (
-    <div>
+    <div className="bg-gray-100">
       <Navbar />
       <main>{children}</main>
     </div>
